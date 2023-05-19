@@ -1,0 +1,16 @@
+package Game.Map;
+
+public class Point
+{
+    int x;
+    int y;
+
+    public Point() {
+        this.x = 0;
+        this.y = 0;
+    }
+    public void setPoint(int x,int y) {
+        this.x = x;
+        this.y = y;
+    }
+}

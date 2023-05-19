@@ -1,0 +1,52 @@
+import java.awt.*;
+
+public class Camera {
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+    private int mapWidth;
+    private int mapHeight;
+
+    public Camera(int x, int y, int width, int height, int mapWidth, int mapHeight) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+        this.mapWidth = mapWidth;
+        this.mapHeight = mapHeight;
+    }
+
+    public void translate(Graphics2D g) {
+        g.translate(-x, -y);
+    }
+
+    public void update(int playerX, int playerY) {
+        // update camera position based on player position
+        // adjust for edges of map to avoid scrolling off the screen
+    }
+}
+
+public class Game {
+    private Camera camera;
+    private Map map;
+    private Character character;
+
+    public Game() {
+        // initialize game objects and camera
+        camera = new Camera(0, 0, screenWidth, screenHeight, mapWidth, mapHeight);
+        map = new Map(mapWidth, mapHeight);
+        character = new Character(startX, startY);
+    }
+
+    public void update() {
+        // update game state, including camera position
+        camera.update(character.getX(), character.getY());
+    }
+
+    public void render(Graphics2D g) {
+        camera.translate(g);
+        map.draw(g);
+        character.draw(g, camera.getX(), camera.getY());
+    }
+}
