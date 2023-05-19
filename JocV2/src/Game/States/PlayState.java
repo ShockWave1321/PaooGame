@@ -36,8 +36,10 @@ public class PlayState extends State
         hero.Update();
         for (Character character : characters)
         {
+            hero.checkCollisionWith(character);
             character.Update();
         }
+
         /*if(fight)
         {
 

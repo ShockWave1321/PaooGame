@@ -43,14 +43,15 @@ public class Game implements Runnable
         aboutState      = new AboutState(refLink);
         pauseState      = new PauseState(refLink);
         battleState     = new BattleState(refLink);
-        State.SetState(menuState);
+        //State.SetState(menuState);
+        State.SetState(playState);
     }
 
     public static Game InitGame()
     {
         if(game == null)
         {
-            game = new Game("Game", 1440, 720);
+            game = new Game("Game", 1440, 720); ///("Game", 1440, 720);
         }
         return game;
     }

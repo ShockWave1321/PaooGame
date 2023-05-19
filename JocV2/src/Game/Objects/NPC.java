@@ -9,9 +9,7 @@ import java.awt.image.BufferedImage;
 
 public class NPC extends Character
 {
-    private BufferedImage image;
-    private final int screenX;
-    private final int screenY;
+    private final BufferedImage image;
     private final CollisionChecker collCheck;
     public NPC(RefLinks refLink, float x, float y)
     {
@@ -27,26 +25,22 @@ public class NPC extends Character
         attackBounds.width = 20;
         attackBounds.height = 20;
 
-        //screenX = (refLink.GetWidth() - Character.DEFAULT_CREATURE_WIDTH)/2;
-        //screenY = (refLink.GetHeight() - Character.DEFAULT_CREATURE_HEIGHT)/2;
-
-        screenX = (int)x ;
-        screenY = (int)y ;
-
-        collCheck = new CollisionChecker(refLink);
+        collCheck = new CollisionChecker(refLink,this);
+        xMove = 1;
     }
 
     @Override
     public void Update()
     {
         collCheck.checkMapCollision();
+        Move();
     }
 
     @Override
     public void Draw(Graphics g)
     {
-        g.drawImage(image, screenX, screenY, width, height, null);
-        g.setColor(Color.red);
-        g.fillRect(screenX + bounds.x, screenY + bounds.y, bounds.width, bounds.height);
+        g.drawImage(image, (int)x, (int)y, width, height, null);
+        //g.setColor(Color.red);
+        //g.fillRect(screenX + bounds.x, screenY + bounds.y, bounds.width, bounds.height);
     }
 }

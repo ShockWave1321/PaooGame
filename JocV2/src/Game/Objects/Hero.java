@@ -33,7 +33,7 @@ public class Hero extends Character
         screenX = (refLink.GetWidth() - Character.DEFAULT_CREATURE_WIDTH)/2;
         screenY = (refLink.GetHeight() - Character.DEFAULT_CREATURE_HEIGHT)/2;
 
-        collCheck = new CollisionChecker(refLink);
+        collCheck = new CollisionChecker(refLink,this);
         animation = new Animation(this);
     }
     @Override
@@ -73,12 +73,11 @@ public class Hero extends Character
     @Override
     public void Draw(Graphics g)
     {
-        //g.drawImage(image, screenX, screenY, width, height, null);
         g.drawImage(image, (int)x, (int)y, width, height, null);
         //g.setColor(Color.red);
-        //g.drawRect(screenX , screenY, width, height);
+        //g.drawRect((int)x, (int)y, width, height);
         //g.setColor(Color.blue);
-        //g.fillRect(screenX + bounds.x, screenY + bounds.y, bounds.width, bounds.height);
+        //g.fillRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
     }
     public int getScreenX()
     {

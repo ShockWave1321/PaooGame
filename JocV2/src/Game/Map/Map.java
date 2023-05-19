@@ -1,5 +1,6 @@
 package Game.Map;
 
+import Game.Objects.Character;
 import Game.Objects.Hero;
 import Game.RefLinks;
 import Game.Tiles.Tile;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 
 public class Map
 {
-    private RefLinks refLink;
+    private final RefLinks refLink;
     private int width;
     private int height;
     private int [][] tiles;
@@ -31,67 +32,34 @@ public class Map
         )
         {
             nextLevel();
-            refLink.getHero().SetX(spawnPoint.x*Tile.TILE_HEIGHT);
-            refLink.getHero().SetY(spawnPoint.y*Tile.TILE_HEIGHT);
+            refLink.getHero().SetX(spawnPoint.x * Tile.TILE_HEIGHT);
+            refLink.getHero().SetY(spawnPoint.y * Tile.TILE_HEIGHT);
         }
     }
-    /*
-    int offsetX = (int) ((refLink.GetWidth()/2) - refLink.getHero().GetX());
-        int offsetY = (int) ((refLink.GetHeight()/2) - refLink.getHero().GetY());
-        g.translate(offsetX, offsetY);
-        for (int y =-10; y < 50 / Tile.TILE_HEIGHT + 9; y++) {
-            for (int x = -15; x < 50 / Tile.TILE_WIDTH + 13; x++) {
-                GetTile(x, y).Draw(g, (int) x * Tile.TILE_HEIGHT, (int) y * Tile.TILE_WIDTH);
-            }
-        }
-    */
+
     public void Draw(Graphics g)
     {
-        int offsetX = (int) (refLink.GetWidth()/2 - refLink.getHero().GetX());
-        int offsetY = (int) (refLink.GetHeight()/2 - refLink.getHero().GetY());
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                Tile.voidTile.Draw(g, (int) x * Tile.TILE_HEIGHT, (int) y * Tile.TILE_WIDTH);
+            }
+        }
+
+        Hero hero = refLink.getHero();
+        int offsetX = (int) (hero.getScreenX() - refLink.getHero().GetX());
+        int offsetY = (int) (hero.getScreenY() - refLink.getHero().GetY());
+
         g.translate(offsetX, offsetY);
-        for (int y = 0; y < refLink.GetHeight() / Tile.TILE_HEIGHT; y++) {
-            for (int x = 0; x < refLink.GetWidth() / Tile.TILE_WIDTH; x++) {
-                GetTile(x, y).Draw(g, (int) x * Tile.TILE_HEIGHT, (int) y * Tile.TILE_WIDTH);
-            }
-        }
-        /*
-        for(int y = -10; y <= refLink.GetGame().GetHeight()/Tile.TILE_HEIGHT + 10; ++y)
+
+        for (int y = 0; y < height; y++)
         {
-            for(int x = -10; x <= refLink.GetGame().GetWidth()/Tile.TILE_WIDTH + 10; ++x)
+            for (int x = 0; x < width; x++)
             {
-                Tile.voidTile.Draw(g, x * Tile.TILE_HEIGHT, y * Tile.TILE_WIDTH);
+                GetTile(x, y).Draw(g, x * Tile.TILE_HEIGHT,y * Tile.TILE_WIDTH);
             }
         }
-
-        for(int worldY = 0; worldY < height; worldY++)
-        {
-            for(int worldX = 0; worldX < width; worldX++)
-            {
-                int tileX = worldX * Tile.TILE_HEIGHT;
-                int tileY = worldY * Tile.TILE_WIDTH;
-                Hero hero = refLink.getHero();
-
-                int heroX = (int)hero.GetX();
-                int heroY = (int)hero.GetY();
-                int heroSX = hero.getScreenX();
-                int heroSY = hero.getScreenY();
-
-                int screenX = tileX - heroX + heroSX;
-                int screenY = tileY - heroY + heroSY;
-
-                if(
-                    tileX + Tile.TILE_HEIGHT > heroX - heroSX &&
-                    tileX - Tile.TILE_HEIGHT < heroX + heroSX &&
-                    tileY + Tile.TILE_WIDTH > heroY - heroSY &&
-                    tileY - Tile.TILE_WIDTH < heroY + heroSY
-                )
-                {
-                    GetTile(worldX, worldY).Draw(g, screenX, screenY);
-                }
-            }
-        }
-         */
     }
     public Tile GetTile(int x, int y)
     {

@@ -10,6 +10,7 @@ public abstract class Item
     protected float y;
     protected int width;
     protected int height;
+    protected boolean collides;
     protected Rectangle bounds;
     protected Rectangle normalBounds;
     protected Rectangle attackBounds;
@@ -29,6 +30,8 @@ public abstract class Item
         attackBounds = new Rectangle(0, 0, width, height);
 
         bounds = normalBounds;
+        
+        collides = false;
     }
     public abstract void Update();
 
@@ -75,5 +78,17 @@ public abstract class Item
     }
     public Rectangle getBounds() {
         return bounds;
+    }
+    public void checkCollisionWith(Item item)
+    {
+        collides = x < item.x + item.width &&
+                    item.x < x + width &&
+                    y < item.y + item.height &&
+                    item.y < y + height;
+        item.collides = collides;
+    }
+    public boolean isColliding()
+    {
+        return collides;
     }
 }
