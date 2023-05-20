@@ -3,6 +3,8 @@ package Game.AnimationManager;
 import Game.Objects.Hero;
 import Game.Graphics.Assets;
 
+import java.awt.image.BufferedImage;
+
 public class Animation
 {
     private final Hero hero;
@@ -23,39 +25,41 @@ public class Animation
     }
     public void animate()
     {
+        BufferedImage last;
         float heroX = hero.GetXMove();
         float heroY = hero.GetYMove();
         animSpeed = CONST_SPEED/(int)hero.GetSpeed();
 
         if (heroX > 0) {
             if (left) {
-                hero.setImage(Assets.heroRightRunLeft);
+                last = Assets.heroRightRunLeft;
             } else {
-                hero.setImage(Assets.heroRightRunRight);
+                last = Assets.heroRightRunRight;
             }
         } else if (heroX < 0) {
             if (left) {
-                hero.setImage(Assets.heroLeftRunLeft);
+                last = Assets.heroLeftRunLeft;
             } else {
-                hero.setImage(Assets.heroLeftRunRight);
+                last = Assets.heroLeftRunRight;
             }
         } else if (heroY < 0) {
             if (left) {
-                hero.setImage(Assets.heroBackRunLeft);
+                last = Assets.heroBackRunLeft;
             } else {
-                hero.setImage(Assets.heroBackRunRight);
+                last = Assets.heroBackRunRight;
             }
         } else if (heroY > 0) {
             if (left) {
-                hero.setImage(Assets.heroFrontRunLeft);
+                last = Assets.heroFrontRunLeft;
             } else {
-                hero.setImage(Assets.heroFrontRunRight);
+                last = Assets.heroFrontRunRight;
             }
         }
         else
         {
-            hero.setImage(Assets.heroFront);
+            last = Assets.heroFront;
         }
+        hero.setImage(last);
         if (t > animSpeed)
         {
             left = !left;

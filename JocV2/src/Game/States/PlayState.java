@@ -11,11 +11,12 @@ import java.util.ArrayList;
 
 public class PlayState extends State
 {
-    private Hero hero;
-    private Map map;
-    private ArrayList<Character> characters;
+    private final Hero hero;
+    private final Map map;
+    private final ArrayList<Character> characters;
     boolean fight = false;
     private State battleState;
+    int i = 0;
     public PlayState(RefLinks refLink)
     {
         super(refLink);
@@ -34,15 +35,31 @@ public class PlayState extends State
     {
         map.Update();
         hero.Update();
+        for (int i = 0; i< characters.size(); ++i)
+        {
+            if(hero.CheckItemCollision(characters.get(i)))
+            {
+                if(characters.get(i) instanceof NPC)
+                {
+                    //refLink.GetGame().NextState();
+                    //characters.remove(characters.get(i));
+                    ((NPC) characters.get(i)).Interact();
+                }
+            }
+        }
         for (Character character : characters)
         {
-            hero.checkCollisionWith(character);
             character.Update();
         }
 
-        /*if(fight)
+        /*
+        for (int i = 0; i< characters.size(); ++i)
         {
-
+            characters.get(i).Update();
+        }
+        if(fight)
+        {
+            reflink.GetGame().SetState(battleState);
         }*/
     }
 

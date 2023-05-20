@@ -26,7 +26,7 @@ public class NPC extends Character
         attackBounds.height = 20;
 
         collCheck = new CollisionChecker(refLink,this);
-        xMove = 1;
+        yMove = 1;
     }
 
     @Override
@@ -41,6 +41,11 @@ public class NPC extends Character
     {
         g.drawImage(image, (int)x, (int)y, width, height, null);
         //g.setColor(Color.red);
-        //g.fillRect(screenX + bounds.x, screenY + bounds.y, bounds.width, bounds.height);
+        //g.fillRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
     }
+    public void Interact()
+    {
+        System.out.println("Hi!");
+    }
+
 }

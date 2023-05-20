@@ -51,7 +51,7 @@ public class Game implements Runnable
     {
         if(game == null)
         {
-            game = new Game("Game", 1440, 720); ///("Game", 1440, 720);
+            game = new Game("Game", 1440, 720); ///("Game", 1440, 720); ("Game", 1920, 1080);
         }
         return game;
     }
@@ -166,29 +166,26 @@ public class Game implements Runnable
             {
                 if (State.GetState() == menuState)
                 {
-                    switch (MenuState.getCurrentOption())
-                    {
-                        case 0 : State.SetState(playState);
-                                break;
-                        case 4 : {
+                    switch (MenuState.getCurrentOption()) {
+                        case 0 -> {
+                            playState = new PlayState(refLink);
+                            State.SetState(playState);
+                        }
+                        case 1 -> State.SetState(playState);
+                        case 4 -> {
                             //StopGame();
                             System.exit(0);
                         }
-                        break;
-                        case 5 : State.SetState(battleState);
-                            break;
-                        default : State.SetState(menuState);
+                        case 5 -> State.SetState(battleState);
+                        default -> State.SetState(menuState);
                     }
                 }
                 else if (State.GetState() == pauseState)
                 {
-                    switch (PauseState.getCurrentOption())
-                    {
-                        case 0 : State.SetState(State.PreviousState());
-                            break;
-                        case 3 : State.SetState(menuState);
-                            break;
-                        default : State.SetState(pauseState);
+                    switch (PauseState.getCurrentOption()) {
+                        case 0 -> State.SetState(State.PreviousState());
+                        case 3 -> State.SetState(menuState);
+                        default -> State.SetState(pauseState);
                     }
                 }
             }
@@ -205,5 +202,6 @@ public class Game implements Runnable
             pressed = 0;
         }
         hold = pressed;
+
     }
 }

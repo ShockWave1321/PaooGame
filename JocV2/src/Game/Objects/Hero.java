@@ -19,7 +19,7 @@ public class Hero extends Character
     {
         super(refLink, x, y, Character.DEFAULT_CREATURE_WIDTH, Character.DEFAULT_CREATURE_HEIGHT);
 
-        image = Assets.heroLeft;
+        image = Assets.heroFront;
         normalBounds.x = 10;
         normalBounds.y = 12;
         normalBounds.width = 12;
@@ -49,25 +49,31 @@ public class Hero extends Character
         xMove = 0;
         yMove = 0;
         this.SetNormalMode();
-        if(refLink.GetKeyManager().up)
-        {
-            yMove = -speed;
-        }
-        if(refLink.GetKeyManager().down)
-        {
-            yMove = speed;
-        }
-        if(refLink.GetKeyManager().left)
-        {
-            xMove = -speed;
-        }
-        if(refLink.GetKeyManager().right)
-        {
-            xMove = speed;
-        }
+        float currentSpeed = speed;
+
         if(refLink.GetKeyManager().attack)
         {
             this.SetAttackMode();
+        }
+        if(refLink.GetKeyManager().shift)
+        {
+            currentSpeed = speed * 2;
+        }
+        if(refLink.GetKeyManager().up)
+        {
+            yMove = -currentSpeed;
+        }
+        if(refLink.GetKeyManager().down)
+        {
+            yMove = currentSpeed;
+        }
+        if(refLink.GetKeyManager().left)
+        {
+            xMove = -currentSpeed;
+        }
+        if(refLink.GetKeyManager().right)
+        {
+            xMove = currentSpeed;
         }
     }
     @Override
@@ -87,10 +93,12 @@ public class Hero extends Character
     {
         return screenY;
     }
+
     public void setImage(BufferedImage image)
     {
         this.image = image;
     }
+
     public BufferedImage getImage()
     {
         return image;

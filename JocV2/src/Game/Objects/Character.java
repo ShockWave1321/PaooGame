@@ -3,6 +3,8 @@ package Game.Objects;
 import Game.RefLinks;
 import Game.Tiles.Tile;
 
+import java.awt.*;
+
 public abstract class Character extends Item
 {
     public static final int DEFAULT_LIFE            = 10;
@@ -75,5 +77,9 @@ public abstract class Character extends Item
     public void SetYMove(float yMove)
     {
         this.yMove = yMove;
+    }
+    public boolean CheckItemCollision(Item item)
+    {
+        return this.WorldBounds().intersects(item.WorldBounds());
     }
 }

@@ -2,6 +2,7 @@ package Game.Collision;
 
 import Game.Map.Map;
 import Game.Objects.Character;
+import Game.Objects.Item;
 import Game.RefLinks;
 import Game.Tiles.Tile;
 
@@ -22,46 +23,38 @@ public class CollisionChecker
     {
         float xMove = character.GetXMove();
         float yMove = character.GetYMove();
-        float heroX = character.GetX() + character.getBounds().x;
-        float heroY = character.GetY() + character.getBounds().y;
+        float characterX = character.GetX() + character.GetBounds().x;
+        float characterY = character.GetY() + character.GetBounds().y;
 
-        float heroXW = heroX + character.getBounds().width;
-        float heroYH = heroY + character.getBounds().height;
+        float characterXW = characterX + character.GetBounds().width;
+        float characterYH = characterY + character.GetBounds().height;
 
         Map map = refLinks.GetMap();
         if(
-            map.GetTile((int)(heroX + xMove)/Tile.TILE_WIDTH,(int)(heroY)/Tile.TILE_HEIGHT).IsSolid() ||
-            map.GetTile((int)(heroXW + xMove)/Tile.TILE_WIDTH,(int)(heroY)/Tile.TILE_HEIGHT).IsSolid() ||
-            map.GetTile((int)(heroX + xMove)/Tile.TILE_WIDTH,(int)(heroYH)/Tile.TILE_HEIGHT).IsSolid() ||
-            map.GetTile((int)(heroXW + xMove)/Tile.TILE_WIDTH,(int)(heroYH)/Tile.TILE_HEIGHT).IsSolid()
+            map.GetTile((int)(characterX + xMove)/Tile.TILE_WIDTH,(int)(characterY)/Tile.TILE_HEIGHT).IsSolid() ||
+            map.GetTile((int)(characterXW + xMove)/Tile.TILE_WIDTH,(int)(characterY)/Tile.TILE_HEIGHT).IsSolid() ||
+            map.GetTile((int)(characterX + xMove)/Tile.TILE_WIDTH,(int)(characterYH)/Tile.TILE_HEIGHT).IsSolid() ||
+            map.GetTile((int)(characterXW + xMove)/Tile.TILE_WIDTH,(int)(characterYH)/Tile.TILE_HEIGHT).IsSolid()
         )
         {
             character.SetXMove(0);
         }
         if(
-            map.GetTile((int)(heroX)/Tile.TILE_WIDTH,(int)(heroY+yMove)/Tile.TILE_HEIGHT).IsSolid() ||
-            map.GetTile((int)(heroXW)/Tile.TILE_WIDTH,(int)(heroY+yMove)/Tile.TILE_HEIGHT).IsSolid() ||
-            map.GetTile((int)(heroX)/Tile.TILE_WIDTH,(int)(heroYH+yMove)/Tile.TILE_HEIGHT).IsSolid() ||
-            map.GetTile((int)(heroXW)/Tile.TILE_WIDTH,(int)(heroYH+yMove)/Tile.TILE_HEIGHT).IsSolid()
+            map.GetTile((int)(characterX)/Tile.TILE_WIDTH,(int)(characterY+yMove)/Tile.TILE_HEIGHT).IsSolid() ||
+            map.GetTile((int)(characterXW)/Tile.TILE_WIDTH,(int)(characterY+yMove)/Tile.TILE_HEIGHT).IsSolid() ||
+            map.GetTile((int)(characterX)/Tile.TILE_WIDTH,(int)(characterYH+yMove)/Tile.TILE_HEIGHT).IsSolid() ||
+            map.GetTile((int)(characterXW)/Tile.TILE_WIDTH,(int)(characterYH+yMove)/Tile.TILE_HEIGHT).IsSolid()
         )
         {
             character.SetYMove(0);
         }
 
-        if(t>30)
+        /*if(t>30)
         {
            t = 0;
-           System.out.println("X: "+(int)character.GetX()/Tile.TILE_WIDTH+"|Y: "+(int)character.GetY()/Tile.TILE_WIDTH);
+           System.out.println("X: "+(int)refLinks.getHero().GetX()/Tile.TILE_WIDTH+"|Y: "+(int)refLinks.getHero().GetY()/Tile.TILE_WIDTH);
         }
-        ++t;
-    }
-    public void checkItemCollision()
-    {
-        if(character.isColliding())
-        {
-            character.SetXMove(0);
-            character.SetYMove(0);
-        }
+        ++t;*/
     }
 }
 
