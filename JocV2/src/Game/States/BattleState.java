@@ -1,38 +1,58 @@
 package Game.States;
 
 import Game.Graphics.Assets;
-import Game.Map.Map;
 import Game.Objects.Character;
 import Game.Objects.Enemy;
+import Game.Objects.FightingHero;
 import Game.Objects.Hero;
 import Game.RefLinks;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class BattleState extends State
 {
-    BufferedImage fundal = Assets.battleMap;
-    private Hero hero;
-    private Enemy enemy;
+    BufferedImage background = Assets.battleMap;
+    private final Hero hero;
+    private final FightingHero fHero;
+    private final Enemy enemy;
 
-    public BattleState(RefLinks refLink)
+    public BattleState(RefLinks refLink, Enemy enemy)
     {
         super(refLink);
-        hero = refLink.getHero();
-        enemy = null;
+        hero = refLink.GetHero();
+        this.enemy = enemy;
+
+        fHero = new FightingHero(refLink.GetKeyManager(), hero);
+
+        PreBattleSetup();
     }
 
     @Override
     public void Update()
     {
-        hero.Update();
+        fHero.Update();
+        enemy.Update();
+        if(refLink.GetKeyManager().event)
+        {
+            PostBattleSetup();
+            State.SetState(State.PreviousState());
+        }
     }
+    void PreBattleSetup()
+    {
 
+    }
+    void PostBattleSetup()
+    {
+        hero.SetMana(fHero.GetMana());
+        hero.SetLife(fHero.GetHealth());
+    }
     @Override
     public void Draw(Graphics g)
     {
-        g.drawImage(fundal,0,0,refLink.GetWidth(), refLink.GetHeight(), null);
+        g.drawImage(background,0,0, refLink.GetWidth(), refLink.GetHeight(), null);
+        fHero.Draw(g);
+        enemy.Draw(g);
     }
 }

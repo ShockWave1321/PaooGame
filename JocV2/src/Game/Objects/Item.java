@@ -31,7 +31,6 @@ public abstract class Item
         bounds = normalBounds;
     }
     public abstract void Update();
-
     public abstract void Draw(Graphics g);
     public float GetX()
     {
@@ -78,6 +77,11 @@ public abstract class Item
     }
     public Rectangle WorldBounds()
     {
-        return new Rectangle(bounds.x + (int)x,bounds.y + (int)y, bounds.width,bounds.height);
+        return new Rectangle(bounds.x + (int)x,bounds.y + (int)y, bounds.width, bounds.height);
+    }
+    public void Scale(int factor)
+    {
+        width *= factor;
+        height *= factor;
     }
 }

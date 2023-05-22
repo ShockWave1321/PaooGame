@@ -1,6 +1,5 @@
 package Game.Map;
 
-import Game.Objects.Character;
 import Game.Objects.Hero;
 import Game.RefLinks;
 import Game.Tiles.Tile;
@@ -27,13 +26,13 @@ public class Map
     public void Update()
     {
         if(
-            (int)refLink.getHero().GetX()/Tile.TILE_WIDTH == nextPoint.x &&
-            (int)refLink.getHero().GetY()/Tile.TILE_WIDTH == nextPoint.y
+            (int)refLink.GetHero().GetX()/Tile.TILE_WIDTH == nextPoint.x &&
+            (int)refLink.GetHero().GetY()/Tile.TILE_WIDTH == nextPoint.y
         )
         {
             nextLevel();
-            refLink.getHero().SetX(spawnPoint.x * Tile.TILE_HEIGHT);
-            refLink.getHero().SetY(spawnPoint.y * Tile.TILE_HEIGHT);
+            refLink.GetHero().SetX(spawnPoint.x * Tile.TILE_HEIGHT);
+            refLink.GetHero().SetY(spawnPoint.y * Tile.TILE_HEIGHT);
         }
     }
 
@@ -47,9 +46,9 @@ public class Map
             }
         }
 
-        Hero hero = refLink.getHero();
-        int offsetX = (int) (hero.getScreenX() - refLink.getHero().GetX());
-        int offsetY = (int) (hero.getScreenY() - refLink.getHero().GetY());
+        Hero hero = refLink.GetHero();
+        int offsetX = (int) (hero.GetScreenX() - refLink.GetHero().GetX());
+        int offsetY = (int) (hero.GetScreenY() - refLink.GetHero().GetY());
 
         g.translate(offsetX, offsetY);
 

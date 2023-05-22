@@ -2,6 +2,7 @@ package Game.States;
 
 import Game.Map.Map;
 import Game.Objects.Character;
+import Game.Objects.Enemy;
 import Game.Objects.Hero;
 import Game.Objects.NPC;
 import Game.RefLinks;
@@ -15,8 +16,8 @@ public class PlayState extends State
     private final Map map;
     private final ArrayList<Character> characters;
     boolean fight = false;
-    private State battleState;
-    int i = 0;
+    //private final State battleState;
+    Font font;
     public PlayState(RefLinks refLink)
     {
         super(refLink);
@@ -24,10 +25,11 @@ public class PlayState extends State
         refLink.SetMap(map);
         hero = new Hero(refLink,8*32, 43*32); //23*48 = 1104  27*48 = 1296
         refLink.setHero(hero);
-        battleState = new BattleState(refLink);
+        //battleState = new BattleState(refLink);
 
         characters = new ArrayList<>();
         characters.add(new NPC(refLink,32 * 9,32 * 43));
+        characters.add(new Enemy(refLink,32 * 2, 32 * 42));
     }
 
     @Override
@@ -37,13 +39,24 @@ public class PlayState extends State
         hero.Update();
         for (int i = 0; i< characters.size(); ++i)
         {
-            if(hero.CheckItemCollision(characters.get(i)))
+            if(characters.get(i) instanceof NPC)
             {
-                if(characters.get(i) instanceof NPC)
+                if(hero.CheckItemCollision(characters.get(i)))
                 {
-                    //refLink.GetGame().NextState();
-                    //characters.remove(characters.get(i));
                     ((NPC) characters.get(i)).Interact();
+                }
+                else
+                {
+                    ((NPC) characters.get(i)).EndInteraction();
+                }
+            }
+            else
+            if(characters.get(i) instanceof Enemy)
+            {
+                if(hero.CheckItemCollision(characters.get(i)))
+                {
+                    State.SetState(new BattleState(refLink, (Enemy) characters.get(i)));
+                    characters.remove(characters.get(i));
                 }
             }
         }
@@ -51,18 +64,8 @@ public class PlayState extends State
         {
             character.Update();
         }
-
-        /*
-        for (int i = 0; i< characters.size(); ++i)
-        {
-            characters.get(i).Update();
-        }
-        if(fight)
-        {
-            reflink.GetGame().SetState(battleState);
-        }*/
+        //System.out.println(hero.GetLife()+"-"+hero.GetMana());
     }
-
     @Override
     public void Draw(Graphics g)
     {

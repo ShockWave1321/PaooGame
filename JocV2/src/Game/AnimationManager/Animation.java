@@ -1,22 +1,22 @@
 package Game.AnimationManager;
 
-import Game.Objects.Hero;
+import Game.Objects.Character;
 import Game.Graphics.Assets;
 
 import java.awt.image.BufferedImage;
 
 public class Animation
 {
-    private final Hero hero;
+    private final Character character;
     private boolean left = false;
     private int animSpeed;
     private final int CONST_SPEED = 80;
     int t = 0;
     //private List<BufferedImage> cadre;
-    public Animation(Hero hero)
+    public Animation(Character character)
     {
-        this.hero = hero;
-        animSpeed = CONST_SPEED/(int)hero.GetSpeed();
+        this.character = character;
+        animSpeed = CONST_SPEED/(int)character.GetSpeed();
         /*
         cadre = new ArrayList<>();
         cadre.add(Assets.heroLeft);
@@ -26,29 +26,29 @@ public class Animation
     public void animate()
     {
         BufferedImage last;
-        float heroX = hero.GetXMove();
-        float heroY = hero.GetYMove();
-        animSpeed = CONST_SPEED/(int)hero.GetSpeed();
+        float characterX = character.GetXMove();
+        float characterY = character.GetYMove();
+        animSpeed = CONST_SPEED/(int)character.GetSpeed();
 
-        if (heroX > 0) {
+        if (characterX > 0) {
             if (left) {
                 last = Assets.heroRightRunLeft;
             } else {
                 last = Assets.heroRightRunRight;
             }
-        } else if (heroX < 0) {
+        } else if (characterX < 0) {
             if (left) {
                 last = Assets.heroLeftRunLeft;
             } else {
                 last = Assets.heroLeftRunRight;
             }
-        } else if (heroY < 0) {
+        } else if (characterY < 0) {
             if (left) {
                 last = Assets.heroBackRunLeft;
             } else {
                 last = Assets.heroBackRunRight;
             }
-        } else if (heroY > 0) {
+        } else if (characterY > 0) {
             if (left) {
                 last = Assets.heroFrontRunLeft;
             } else {
@@ -59,7 +59,7 @@ public class Animation
         {
             last = Assets.heroFront;
         }
-        hero.setImage(last);
+        character.SetImage(last);
         if (t > animSpeed)
         {
             left = !left;

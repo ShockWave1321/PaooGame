@@ -10,11 +10,15 @@ import Game.RefLinks;
 
 public class Hero extends Character
 {
-    private BufferedImage image;
     private final int screenX;
     private final int screenY;
     private final Animation animation;
     private final CollisionChecker collCheck;
+    private int experience;
+    private int mana;
+    private int money;
+    private final int ABILITIES_CAP = 3;
+    private final Ability[] abilities;
     public Hero(RefLinks refLink, float x, float y)
     {
         super(refLink, x, y, Character.DEFAULT_CREATURE_WIDTH, Character.DEFAULT_CREATURE_HEIGHT);
@@ -30,11 +34,18 @@ public class Hero extends Character
         attackBounds.width = 20;
         attackBounds.height = 20;
 
+        speed = 2.0f;
+
         screenX = (refLink.GetWidth() - Character.DEFAULT_CREATURE_WIDTH)/2;
         screenY = (refLink.GetHeight() - Character.DEFAULT_CREATURE_HEIGHT)/2;
 
         collCheck = new CollisionChecker(refLink,this);
         animation = new Animation(this);
+        abilities = new Ability[ABILITIES_CAP];
+
+        experience = 0;
+        mana = 3;
+        money = 0;
     }
     @Override
     public void Update()
@@ -54,6 +65,10 @@ public class Hero extends Character
         if(refLink.GetKeyManager().attack)
         {
             this.SetAttackMode();
+            for(Ability a:abilities)
+            {
+                a.Fire();
+            }
         }
         if(refLink.GetKeyManager().shift)
         {
@@ -85,22 +100,65 @@ public class Hero extends Character
         //g.setColor(Color.blue);
         //g.fillRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
     }
-    public int getScreenX()
+    public int GetScreenX()
     {
         return screenX;
     }
-    public int getScreenY()
+    public int GetScreenY()
     {
         return screenY;
     }
-
-    public void setImage(BufferedImage image)
+    public Animation GetAnimation()
     {
-        this.image = image;
+        return animation;
     }
 
-    public BufferedImage getImage()
+    public BufferedImage GetImage()
     {
         return image;
     }
+    public int GetExperience()
+    {
+        return experience;
+    }
+    public int GetMoney()
+    {
+        return money;
+    }
+    public int GetMana()
+    {
+        return mana;
+    }
+    public void SetExperience(int experience)
+    {
+        this.experience = experience;
+    }
+    public void SetMoney(int money)
+    {
+        this.money = money;
+    }
+    public void SetMana(int mana)
+    {
+        this.mana = mana;
+    }
+    public boolean CheckItemCollision(Item item)
+    {
+        return collCheck.CheckItemCollision(item);
+    }
+    public void CheckItemsCollision(Character[] characters)
+    {
+        for(Character character : characters)
+        {
+            if(collCheck.CheckItemCollision(character))
+            {
+                xMove = 0;
+                yMove = 0;
+            }
+        }
+    }
+    public Hero PrebattleHero(Hero hero)
+    {
+        return hero;
+    }
+
 }

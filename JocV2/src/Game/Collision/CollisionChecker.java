@@ -6,6 +6,8 @@ import Game.Objects.Item;
 import Game.RefLinks;
 import Game.Tiles.Tile;
 
+import java.awt.*;
+
 
 public class CollisionChecker
 {
@@ -49,12 +51,27 @@ public class CollisionChecker
             character.SetYMove(0);
         }
 
-        /*if(t>30)
+        /*if(t>40)
         {
            t = 0;
            System.out.println("X: "+(int)refLinks.getHero().GetX()/Tile.TILE_WIDTH+"|Y: "+(int)refLinks.getHero().GetY()/Tile.TILE_WIDTH);
         }
         ++t;*/
     }
+    public boolean CheckItemCollision(Item item)
+    {
+        int crx = (int)character.GetX();
+        int cry = (int)character.GetY();
+        int crw = character.GetWidth();
+        int crh = character.GetHeight();
+        int crS = (int)character.GetSpeed();
+        Rectangle ri = item.WorldBounds();
+
+        return new Rectangle(crx + crS, cry, crw, crh).intersects(ri) ||
+                new Rectangle(crx - crS, cry, crw, crh).intersects(ri) ||
+                new Rectangle(crx,cry + crS, crw, crh).intersects(ri) ||
+                new Rectangle(crx,cry - crS, crw, crh).intersects(ri);
+    }
+
 }
 

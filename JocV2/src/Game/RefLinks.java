@@ -43,7 +43,7 @@ public class RefLinks
     {
         this.map = map;
     }
-    public Hero getHero()
+    public Hero GetHero()
     {
         return hero;
     }

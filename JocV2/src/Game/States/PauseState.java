@@ -82,7 +82,7 @@ public class PauseState extends State
     {
         return 0;
     }
-    public static int getCurrentOption()
+    public static int GetCurrentOption()
     {
         return currentOption;
     }

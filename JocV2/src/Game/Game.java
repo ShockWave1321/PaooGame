@@ -1,5 +1,6 @@
 package Game;
 
+import Game.DataBase.DataBase;
 import Game.GameWindow.GameWindow;
 import Game.Input.KeyManager;
 import Game.States.*;
@@ -22,9 +23,10 @@ public class Game implements Runnable
     private State settingsState;
     private State aboutState;
     private State pauseState;
-    private State battleState;
     private KeyManager keyManager;
     private RefLinks refLink;
+    private final DataBase database;
+    int t = 0;
 
     private Game(String title, int width, int height)
     {
@@ -37,12 +39,13 @@ public class Game implements Runnable
         Assets.Init();
 
         refLink = new RefLinks(this);
+        database = new DataBase();
         playState       = new PlayState(refLink);
         menuState       = new MenuState(refLink);
         settingsState   = new SettingsState(refLink);
         aboutState      = new AboutState(refLink);
         pauseState      = new PauseState(refLink);
-        battleState     = new BattleState(refLink);
+
         //State.SetState(menuState);
         State.SetState(playState);
     }
@@ -112,11 +115,15 @@ public class Game implements Runnable
     private void Update()
     {
         keyManager.Update();
-        if(State.GetState() != null)
-        {
+        if(State.GetState() != null) {
             State.GetState().Update();
             NextState();
+            if (t > 60){
+                System.out.println(State.GetState().toString());
+                t = 0;
+            }
         }
+        t++;
     }
 
     private void Draw()
@@ -176,13 +183,12 @@ public class Game implements Runnable
                             //StopGame();
                             System.exit(0);
                         }
-                        case 5 -> State.SetState(battleState);
                         default -> State.SetState(menuState);
                     }
                 }
                 else if (State.GetState() == pauseState)
                 {
-                    switch (PauseState.getCurrentOption()) {
+                    switch (PauseState.GetCurrentOption()) {
                         case 0 -> State.SetState(State.PreviousState());
                         case 3 -> State.SetState(menuState);
                         default -> State.SetState(pauseState);
@@ -202,6 +208,9 @@ public class Game implements Runnable
             pressed = 0;
         }
         hold = pressed;
-
+    }
+    public DataBase GetDatabase()
+    {
+        return database;
     }
 }
