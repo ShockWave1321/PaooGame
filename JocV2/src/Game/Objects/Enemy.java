@@ -1,29 +1,28 @@
 package Game.Objects;
 
+import Game.AnimationManager.Animation;
 import Game.Collision.CollisionChecker;
 import Game.Graphics.Assets;
 import Game.RefLinks;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
 public class Enemy extends Character
 {
     static final int seconds = 60;
-    private final BufferedImage image;
     private final CollisionChecker collCheck;
+    private final Animation animation;
     boolean dead;
     Random movement;
     int nextMove = 121;
     public Enemy(RefLinks refLink, float x, float y)
     {
-        super(refLink, x, y, Character.DEFAULT_CREATURE_WIDTH, Character.DEFAULT_CREATURE_HEIGHT);
-        image = Assets.girlFront;
-        normalBounds.x = 10;
-        normalBounds.y = 12;
-        normalBounds.width = 12;
-        normalBounds.height = 18;
+        super(refLink, x, y, 64, 64);
+        normalBounds.x = 9;
+        normalBounds.y = 14;
+        normalBounds.width = 45;
+        normalBounds.height = 40;
 
         attackBounds.x = 12;
         attackBounds.y = 14;
@@ -32,16 +31,18 @@ public class Enemy extends Character
         collCheck = new CollisionChecker(refLink,this);
 
         dead = false;
-        speed = 0.5f;
-        movement = new Random(1);
+        speed = 1.f;
+        movement = new Random();
+        animation = new Animation(this, Assets.monster);
     }
 
     @Override
     public void Update()
     {
         collCheck.checkMapCollision();
-        RandomMove();
+        RandomMove1();
         Move();
+        animation.animate();
     }
 
     public void RandomMove()
@@ -63,35 +64,43 @@ public class Enemy extends Character
             else{
                 xMove = 0; yMove = -1;
             }
-
-            /*if(movement.nextInt(75) > 24)
+            nextMove = 0;
+        }
+        nextMove++;
+    }
+    public void RandomMove1()
+    {
+        if(nextMove > 2 * seconds)
+        {
+            int mv = movement.nextInt(75);
+            if(mv < 25)
                 yMove = 1;
             else
-            if(movement.nextInt(75) > 48)
+            if(mv < 50)
                 yMove = 0;
             else
                 yMove = -1;
 
-            if(movement.nextInt(75) > 24)
+            mv = movement.nextInt(75);
+            if(mv < 25)
                 xMove = 1;
             else
-            if(movement.nextInt(75) > 48)
+            if(mv < 50)
                 xMove = 0;
             else
-                xMove = -1;*/
-
+                xMove = -1;
             nextMove = 0;
         }
         nextMove++;
     }
 
-
     @Override
     public void Draw(Graphics g)
     {
         g.drawImage(image, (int)x, (int)y, width, height, null);
-        //g.setColor(Color.red);
+        g.setColor(Color.red);
         //g.fillRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
+        g.drawRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
     }
     public boolean IsDead()
     {

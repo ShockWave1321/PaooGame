@@ -1,8 +1,12 @@
 package Game.AnimationManager;
 
+import Game.Graphics.Assets;
+import Game.Input.KeyManager;
 import Game.Objects.Character;
-import Game.Objects.FightingHero;
+import Game.Objects.Hero;
+import Game.RefLinks;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Animation
@@ -20,13 +24,7 @@ public class Animation
         animSpeed = CONST_SPEED/(int)character.GetSpeed();
         this.cadre = cadre;
     }
-    /*public Animation(FightingHero character, BufferedImage[][] cadre)
-    {
-        this.character = character;
-        animSpeed = CONST_SPEED/(int)character.GetSpeed();
-        this.cadre = cadre;
-    }*/
-    public void animate()
+    public void animate(Character character)
     {
         float characterX = character.GetXMove();
         float characterY = character.GetYMove();
@@ -51,10 +49,31 @@ public class Animation
         if (t > animSpeed)
         {
             cadru++;
-            if(cadru >= cadre[0].length)
+            if(cadru >= cadre[dir].length)
                 cadru = 1;
             t = 0;
         }
+        t++;
+    }
+    public void animate()
+    {
+        float characterX = character.GetXMove();
+        animSpeed = CONST_SPEED/((int)character.GetSpeed()*2);
+        if (characterX > 0) {
+            dir = 0;
+        } else
+        if (characterX < 0) {
+            dir = 4;
+        }
+        if (t > animSpeed)
+        {
+            cadru++;
+            if(cadru >= cadre[dir].length)
+                cadru = 0;
+            t = 0;
+            System.out.println(cadru);
+        }
+        character.SetImage(cadre[dir][cadru]);
         t++;
     }
 }

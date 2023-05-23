@@ -23,8 +23,9 @@ public class CollisionChecker
     }
     public void checkMapCollision()
     {
-        float xMove = character.GetXMove();
-        float yMove = character.GetYMove();
+        float speed = character.GetSpeed();
+        float xMove = character.GetXMove() * speed;
+        float yMove = character.GetYMove() * speed;
         float characterX = character.GetX() + character.GetBounds().x;
         float characterY = character.GetY() + character.GetBounds().y;
 

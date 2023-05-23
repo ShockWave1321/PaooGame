@@ -6,8 +6,11 @@ import java.awt.event.KeyListener;
 public class KeyManager implements KeyListener
 {
     private final boolean[] keys;
-    public boolean up, down, left, right, attack, exit, enter, shift, event;
-    //int pressed, hold;
+    public boolean up, down, left, right, attack, exit, enter, shift, event,
+                    k1, k2, k3, k4;
+
+
+    //int pressed = 0, hold = 0;
     public KeyManager()
     {
         keys = new boolean[256];
@@ -24,6 +27,10 @@ public class KeyManager implements KeyListener
         enter = keys[KeyEvent.VK_ENTER];
         shift = keys[KeyEvent.VK_SHIFT];
         event = keys[KeyEvent.VK_E];
+        k1 = keys[KeyEvent.VK_1];
+        k2 = keys[KeyEvent.VK_2];
+        k3 = keys[KeyEvent.VK_3];
+        k4 = keys[KeyEvent.VK_4];
     }
 
     @Override
@@ -41,15 +48,15 @@ public class KeyManager implements KeyListener
     @Override
     public void keyTyped(KeyEvent e)
     {
-        /*pressed = 1;
+        /*pressed = 0;
         if(hold == 0)
         {
             keys[e.getKeyCode()] = true;
+            pressed = 1;
         }
         else
         {
             keys[e.getKeyCode()] = false;
-            pressed = 0;
         }
         hold = pressed;*/
     }

@@ -1,5 +1,6 @@
 package Game.Graphics;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Assets
@@ -10,8 +11,8 @@ public class Assets
                                 heroRightRunLeft, heroRightRunRight, heroDownRunLeft, heroDownRunRight,
                                 girlFront, battleMap;
 
-    public static BufferedImage[] heroRunLeft, heroRunRight, heroRunUp, heroRunDown;
-    public static BufferedImage[][] heroRun, iceDagger;
+    public static BufferedImage[] heroRunLeft, heroRunRight, heroRunUp, heroRunDown, monsterLeft, monsterRight;
+    public static BufferedImage[][] heroRun, iceDagger, monster;
     public static void Init()
     {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.LoadImage("/WorldMap/MapSpriteSheet.png"));
@@ -69,12 +70,41 @@ public class Assets
         heroRun[2] = heroRunLeft;
         heroRun[3] = heroRunRight;
 
+
         SpriteSheet iceDaggerSheet = new SpriteSheet(ImageLoader.LoadImage("/Abilities/IceDagger.png"));
         iceDagger = new BufferedImage[2][10];
         for(int i = 0;i<10;++i)
         {
             iceDagger[0][i] = iceDaggerSheet.crop(i,0,48,32);
             iceDagger[1][i] = iceDaggerSheet.crop(9-i,1,48,32);
+        }
+
+        monster = new BufferedImage[8][];
+        monster[0] = new BufferedImage[6];
+        monster[1] = new BufferedImage[6];
+        monster[4] = new BufferedImage[6];
+        monster[5] = new BufferedImage[6];
+        monster[2] = new BufferedImage[4];
+        monster[6] = new BufferedImage[4];
+        monster[3] = new BufferedImage[8];
+        monster[7] = new BufferedImage[8];
+        SpriteSheet monsterSheet = new SpriteSheet(ImageLoader.LoadImage("/Characters/Monster1.png"));
+        for(int i = 0;i<6;++i)
+        {
+            monster[0][i] = monsterSheet.crop(i,0,64,64);
+            monster[1][i] = monsterSheet.crop(i,1,64,64);
+            monster[4][i] = monsterSheet.crop(7-i,4,64,64);
+            monster[5][i] = monsterSheet.crop(7-i,5,64,64);
+        }
+        for(int i = 0;i < 4;++i)
+        {
+            monster[2][i] = monsterSheet.crop(i,2,64,64);
+            monster[6][i] = monsterSheet.crop(7-i,6,64,64);
+        }
+        for(int i = 0;i<8;++i)
+        {
+            monster[3][i] = monsterSheet.crop(i,3,64,64);
+            monster[7][i] = monsterSheet.crop(7-i,7,64,64);
         }
     }
 }

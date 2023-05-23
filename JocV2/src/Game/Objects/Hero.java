@@ -49,7 +49,7 @@ public class Hero extends Character
 
         collCheck = new CollisionChecker(refLink,this);
         animation = new Animation(this, Assets.heroRun);
-        abilities = new ArrayList<Ability>();
+        abilities = new ArrayList<>();
 
         experience = 0;
         health = 1;
@@ -65,7 +65,7 @@ public class Hero extends Character
         Move();
         HealthRegen();
         ManaRegen();
-        animation.animate();
+        animation.animate(this);
         if(!abilities.isEmpty())
         {
             for(int i = 0; i<abilities.size(); ++i)
@@ -81,7 +81,6 @@ public class Hero extends Character
                 }
             }
         }
-
     }
     public void Time()
     {
@@ -142,7 +141,7 @@ public class Hero extends Character
     @Override
     public void Draw(Graphics g)
     {
-        g.drawImage(image, (int)x, (int)y, width, height, null);
+        //zg.drawImage(image, (int)x, (int)y, width, height, null);
         if(!abilities.isEmpty())
         {
             for(Ability a : abilities)
@@ -150,10 +149,10 @@ public class Hero extends Character
                 a.Draw(g);
             }
         }
-        //g.setColor(Color.red);
+        g.setColor(Color.red);
         //g.drawRect((int)x, (int)y, width, height);
         //g.setColor(Color.blue);
-        //g.fillRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
+        g.drawRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
     }
     public int GetScreenX()
     {
@@ -167,7 +166,6 @@ public class Hero extends Character
     {
         return animation;
     }
-
     public BufferedImage GetImage()
     {
         return image;

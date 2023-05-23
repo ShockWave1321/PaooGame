@@ -1,5 +1,6 @@
 package Game.States;
 
+import Game.Graphics.Assets;
 import Game.Map.Map;
 import Game.Objects.Character;
 import Game.Objects.Enemy;
