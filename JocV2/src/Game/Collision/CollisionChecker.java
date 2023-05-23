@@ -54,7 +54,7 @@ public class CollisionChecker
         /*if(t>40)
         {
            t = 0;
-           System.out.println("X: "+(int)refLinks.getHero().GetX()/Tile.TILE_WIDTH+"|Y: "+(int)refLinks.getHero().GetY()/Tile.TILE_WIDTH);
+           System.out.println("X: "+(int)refLinks.GetHero().GetX()/Tile.TILE_WIDTH+"|Y: "+(int)refLinks.GetHero().GetY()/Tile.TILE_WIDTH);
         }
         ++t;*/
     }

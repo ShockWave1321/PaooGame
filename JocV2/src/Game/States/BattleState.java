@@ -1,7 +1,6 @@
 package Game.States;
 
 import Game.Graphics.Assets;
-import Game.Objects.Character;
 import Game.Objects.Enemy;
 import Game.Objects.FightingHero;
 import Game.Objects.Hero;
@@ -23,7 +22,7 @@ public class BattleState extends State
         hero = refLink.GetHero();
         this.enemy = enemy;
 
-        fHero = new FightingHero(refLink.GetKeyManager(), hero);
+        fHero = new FightingHero(hero);
 
         PreBattleSetup();
     }
@@ -46,7 +45,8 @@ public class BattleState extends State
     void PostBattleSetup()
     {
         hero.SetMana(fHero.GetMana());
-        hero.SetLife(fHero.GetHealth());
+        hero.SetHealth(fHero.GetHealth());
+        fHero.ReScale();
     }
     @Override
     public void Draw(Graphics g)

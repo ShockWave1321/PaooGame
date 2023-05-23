@@ -51,10 +51,20 @@ public class NPC extends Character
             g.setColor(Color.BLACK);
             g.drawString("HI",(int)x+8,(int)y-5);
         }
+        if(interact == 2)
+        {
+            g.setFont(font);
+            g.setColor(Color.RED);
+            g.drawString("OUCH",(int)x+8,(int)y-5);
+        }
     }
-    public void Interact()
+    public void Interact1()
     {
         interact = 1;
+    }
+    public void Interact2()
+    {
+        interact = 2;
     }
     public void EndInteraction()
     {

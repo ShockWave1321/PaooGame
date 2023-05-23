@@ -1,68 +1,58 @@
 package Game.AnimationManager;
 
 import Game.Objects.Character;
-import Game.Graphics.Assets;
+import Game.Objects.FightingHero;
 
 import java.awt.image.BufferedImage;
 
 public class Animation
 {
     private final Character character;
-    private boolean left = false;
     private int animSpeed;
-    private final int CONST_SPEED = 80;
+    private final int CONST_SPEED = 40;
     int t = 0;
-    //private List<BufferedImage> cadre;
-    public Animation(Character character)
+    private final BufferedImage[][] cadre;
+    int cadru = 0;
+    int dir = 0;
+    public Animation(Character character, BufferedImage[][] cadre)
     {
         this.character = character;
         animSpeed = CONST_SPEED/(int)character.GetSpeed();
-        /*
-        cadre = new ArrayList<>();
-        cadre.add(Assets.heroLeft);
-        cadre.add(Assets.heroRight);
-        */
+        this.cadre = cadre;
     }
+    /*public Animation(FightingHero character, BufferedImage[][] cadre)
+    {
+        this.character = character;
+        animSpeed = CONST_SPEED/(int)character.GetSpeed();
+        this.cadre = cadre;
+    }*/
     public void animate()
     {
-        BufferedImage last;
         float characterX = character.GetXMove();
         float characterY = character.GetYMove();
         animSpeed = CONST_SPEED/(int)character.GetSpeed();
 
         if (characterX > 0) {
-            if (left) {
-                last = Assets.heroRightRunLeft;
-            } else {
-                last = Assets.heroRightRunRight;
-            }
-        } else if (characterX < 0) {
-            if (left) {
-                last = Assets.heroLeftRunLeft;
-            } else {
-                last = Assets.heroLeftRunRight;
-            }
-        } else if (characterY < 0) {
-            if (left) {
-                last = Assets.heroBackRunLeft;
-            } else {
-                last = Assets.heroBackRunRight;
-            }
-        } else if (characterY > 0) {
-            if (left) {
-                last = Assets.heroFrontRunLeft;
-            } else {
-                last = Assets.heroFrontRunRight;
-            }
+            dir = 3;
+        } else
+        if (characterX < 0) {
+            dir = 2;
+        } else
+        if (characterY < 0) {
+            dir = 1;
+        } else
+        if (characterY > 0) {
+            dir = 0;
         }
-        else
-        {
-            last = Assets.heroFront;
+        else {
+            cadru = 0;
         }
-        character.SetImage(last);
+        character.SetImage(cadre[dir][cadru]);
         if (t > animSpeed)
         {
-            left = !left;
+            cadru++;
+            if(cadru >= cadre[0].length)
+                cadru = 1;
             t = 0;
         }
         t++;

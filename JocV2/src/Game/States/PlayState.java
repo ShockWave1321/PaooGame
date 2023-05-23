@@ -16,7 +16,6 @@ public class PlayState extends State
     private final Map map;
     private final ArrayList<Character> characters;
     boolean fight = false;
-    //private final State battleState;
     Font font;
     public PlayState(RefLinks refLink)
     {
@@ -37,13 +36,18 @@ public class PlayState extends State
     {
         map.Update();
         hero.Update();
-        for (int i = 0; i< characters.size(); ++i)
+        for (int i = 0; i < characters.size(); ++i)
         {
             if(characters.get(i) instanceof NPC)
             {
                 if(hero.CheckItemCollision(characters.get(i)))
                 {
-                    ((NPC) characters.get(i)).Interact();
+                    ((NPC) characters.get(i)).Interact1();
+                }
+                else
+                if(hero.CheckBulletCollision(characters.get(i)))
+                {
+                    ((NPC) characters.get(i)).Interact2();
                 }
                 else
                 {
@@ -64,7 +68,6 @@ public class PlayState extends State
         {
             character.Update();
         }
-        //System.out.println(hero.GetLife()+"-"+hero.GetMana());
     }
     @Override
     public void Draw(Graphics g)

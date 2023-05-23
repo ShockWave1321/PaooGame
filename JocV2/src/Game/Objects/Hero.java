@@ -2,6 +2,7 @@ package Game.Objects;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import Game.AnimationManager.Animation;
 import Game.Collision.CollisionChecker;
@@ -10,6 +11,9 @@ import Game.RefLinks;
 
 public class Hero extends Character
 {
+    static final int second = 60;
+    private int HEALTH_CAP = 10;
+    private int MANA_CAP = 3;
     private final int screenX;
     private final int screenY;
     private final Animation animation;
@@ -18,12 +22,15 @@ public class Hero extends Character
     private int mana;
     private int money;
     private final int ABILITIES_CAP = 3;
-    private final Ability[] abilities;
+    private final ArrayList<Ability> abilities;
+    float defaultSpeed;
+    int pressed = 0,hold = 0;
+    int timer = 0;
     public Hero(RefLinks refLink, float x, float y)
     {
         super(refLink, x, y, Character.DEFAULT_CREATURE_WIDTH, Character.DEFAULT_CREATURE_HEIGHT);
 
-        image = Assets.heroFront;
+        image = Assets.heroUp;
         normalBounds.x = 10;
         normalBounds.y = 12;
         normalBounds.width = 12;
@@ -35,66 +42,114 @@ public class Hero extends Character
         attackBounds.height = 20;
 
         speed = 2.0f;
+        defaultSpeed = speed;
 
         screenX = (refLink.GetWidth() - Character.DEFAULT_CREATURE_WIDTH)/2;
         screenY = (refLink.GetHeight() - Character.DEFAULT_CREATURE_HEIGHT)/2;
 
         collCheck = new CollisionChecker(refLink,this);
-        animation = new Animation(this);
-        abilities = new Ability[ABILITIES_CAP];
+        animation = new Animation(this, Assets.heroRun);
+        abilities = new ArrayList<Ability>();
 
         experience = 0;
-        mana = 3;
+        health = 1;
+        mana = 1;
         money = 0;
     }
     @Override
     public void Update()
     {
+        Time();
         GetInput();
         collCheck.checkMapCollision();
         Move();
+        HealthRegen();
+        ManaRegen();
         animation.animate();
+        if(!abilities.isEmpty())
+        {
+            for(int i = 0; i<abilities.size(); ++i)
+            {
+                if(abilities.get(i).IsFired())
+                {
+                    abilities.get(i).Update();
+                }
+                else
+                {
+                    abilities.remove(abilities.get(i));
+                    System.out.println("removed");
+                }
+            }
+        }
+
     }
+    public void Time()
+    {
+        if(timer > 180)
+        {
+            timer = 0;
+
+        }
+        if(timer % 60 == 0)
+        {
+            //System.out.println("Health "+ health);
+            //System.out.println("Mana "+ mana);
+        }
+        timer++;
+    }
+
     private void GetInput()
     {
         xMove = 0;
         yMove = 0;
         this.SetNormalMode();
-        float currentSpeed = speed;
+        speed = defaultSpeed;
 
+        pressed = 0;
         if(refLink.GetKeyManager().attack)
         {
             this.SetAttackMode();
-            for(Ability a:abilities)
+            pressed = 1;
+            if(hold == 0)
             {
-                a.Fire();
+                abilities.add(new IceDaggers(this, x, y));
+                System.out.println("Fired");
             }
         }
+        hold = pressed;
+
         if(refLink.GetKeyManager().shift)
         {
-            currentSpeed = speed * 2;
+            speed = speed * 2;
         }
         if(refLink.GetKeyManager().up)
         {
-            yMove = -currentSpeed;
+            yMove = -1;
         }
         if(refLink.GetKeyManager().down)
         {
-            yMove = currentSpeed;
+            yMove = 1;
         }
         if(refLink.GetKeyManager().left)
         {
-            xMove = -currentSpeed;
+            xMove = -1;
         }
         if(refLink.GetKeyManager().right)
         {
-            xMove = currentSpeed;
+            xMove = 1;
         }
     }
     @Override
     public void Draw(Graphics g)
     {
         g.drawImage(image, (int)x, (int)y, width, height, null);
+        if(!abilities.isEmpty())
+        {
+            for(Ability a : abilities)
+            {
+                a.Draw(g);
+            }
+        }
         //g.setColor(Color.red);
         //g.drawRect((int)x, (int)y, width, height);
         //g.setColor(Color.blue);
@@ -137,10 +192,6 @@ public class Hero extends Character
     {
         this.money = money;
     }
-    public void SetMana(int mana)
-    {
-        this.mana = mana;
-    }
     public boolean CheckItemCollision(Item item)
     {
         return collCheck.CheckItemCollision(item);
@@ -160,5 +211,42 @@ public class Hero extends Character
     {
         return hero;
     }
-
+    public boolean CheckBulletCollision(Item item)
+    {
+        boolean hit = false;
+        for(Ability a : abilities)
+        {
+            if(a.Hits(item))
+            {
+                hit = true;
+            }
+        }
+        return hit;
+    }
+    public void SetMana(int mana)
+    {
+        if(mana <= MANA_CAP)
+            this.mana = mana;
+    }
+    public void ManaRegen()
+    {
+        if(timer % 3 * second == 0)
+        {
+            SetMana(mana+1);
+        }
+    }
+    public void SetHealth(int hp)
+    {
+        if(hp <= HEALTH_CAP)
+        {
+            health = hp;
+        }
+    }
+    public void HealthRegen()
+    {
+        if(timer % 10 * second == 0)
+        {
+            SetHealth(health + 1);
+        }
+    }
 }

@@ -3,26 +3,26 @@ package Game.Objects;
 import Game.RefLinks;
 import Game.Tiles.Tile;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public abstract class Character extends Item
 {
-    public static final int DEFAULT_LIFE            = 10;
+    public static final int DEFAULT_HEALTH = 10;
     public static final float DEFAULT_SPEED         = 1.0f;
     public static final int DEFAULT_CREATURE_WIDTH  = 32;
     public static final int DEFAULT_CREATURE_HEIGHT = 32;
 
     protected BufferedImage image;
-    protected int life;
+    protected int health;
     protected float speed;
     protected float xMove;
     protected float yMove;
+    boolean lastDir;
 
     public Character(RefLinks refLink, float x, float y, int width, int height)
     {
         super(refLink, x, y, width, height);
-        life    = DEFAULT_LIFE;
+        health = DEFAULT_HEALTH;
         speed   = DEFAULT_SPEED;
         xMove   = 0;
         yMove   = 0;
@@ -40,6 +40,15 @@ public abstract class Character extends Item
             xMove = 0;
         }
         x += xMove * speed;
+        if(xMove == 1)
+        {
+            lastDir = true;
+        }
+        else
+        if(xMove == -1)
+        {
+            lastDir = false;
+        }
     }
     public void MoveY()
     {
@@ -54,17 +63,17 @@ public abstract class Character extends Item
     {
         this.image = image;
     }
-    public int GetLife()
+    public int GetHealth()
     {
-        return life;
+        return health;
     }
     public float GetSpeed()
     {
         return speed;
     }
-    public void SetLife(int life)
+    public void SetHealth(int health)
     {
-        this.life = life;
+        this.health = health;
     }
     public void SetSpeed(float speed) {
         this.speed = speed;

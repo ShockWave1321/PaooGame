@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 public class FightingHero
 {
+    int scaleFactor = 2;
     float x, y, speed, currentSpeed;
     int xMove, yMove;
     int width, height;
@@ -19,21 +20,21 @@ public class FightingHero
     KeyManager keyManager;
     int health, mana;
     int t = 0;
-    public FightingHero(KeyManager keyManager, Hero hero)
+    public FightingHero(Hero hero)
     {
         x = 275;
         y = 600;
         speed = hero.GetSpeed();
         animation = hero.GetAnimation();
-        this.keyManager = keyManager;
+        this.keyManager = hero.refLink.GetKeyManager();
 
         width = hero.GetWidth();
         height = hero.GetHeight();
         bounds = hero.GetBounds();
-        Scale(2);
+        Scale();
 
-        image = Assets.heroFront;
-        health = hero.GetLife();
+        image = Assets.heroUp;
+        health = hero.GetHealth();
         mana = hero.GetMana();
     }
     public void Draw(Graphics g)
@@ -48,8 +49,7 @@ public class FightingHero
         animation.animate();
         if(t>60)
         {
-            System.out.print(x+"-");
-            System.out.println(y);
+            System.out.println((int)x+"--"+(int)y);
             t = 0;
         }
         t++;
@@ -95,15 +95,26 @@ public class FightingHero
         x +=xMove * currentSpeed;
         y +=yMove * currentSpeed;
     }
-    public void Scale(float s)
+    public void Scale()
     {
-        bounds.x *= s;
-        bounds.y *= s;
-        bounds.width *= s;
-        bounds.height *= s;
-        width *= s;
-        height *= s;
+        bounds.x *= scaleFactor;
+        bounds.y *= scaleFactor;
+        bounds.width *= scaleFactor;
+        bounds.height *= scaleFactor;
+        width *= scaleFactor;
+        height *= scaleFactor;
     }
+    public void ReScale()
+    {
+        bounds.x /= scaleFactor;
+        bounds.y /= scaleFactor;
+        bounds.width /= scaleFactor;
+        bounds.height /= scaleFactor;
+        width /= scaleFactor;
+        height /= scaleFactor;
+    }
+
+
     public int GetHealth()
     {
         return health;
@@ -112,4 +123,9 @@ public class FightingHero
     {
         return mana;
     }
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
 }

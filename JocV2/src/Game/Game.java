@@ -119,7 +119,7 @@ public class Game implements Runnable
             State.GetState().Update();
             NextState();
             if (t > 60){
-                System.out.println(State.GetState().toString());
+                //System.out.println(State.GetState().toString());
                 t = 0;
             }
         }

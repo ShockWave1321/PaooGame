@@ -240,7 +240,6 @@ public class DataBase
                     "yPos = "+yPos+
                     "WHERE id = " + id + ";";
             stmt.executeQuery(sql);
-
             stmt.close();
             c.commit();
             c.close();
@@ -261,7 +260,7 @@ public class DataBase
             if(rs.next())
             {
                 int health = rs.getInt("health");
-                int mana = rs.getInt("age");
+                int mana = rs.getInt("mana");
                 int experience = rs.getInt("experience");
                 int money = rs.getInt("money");
                 int xPos = rs.getInt("xPos");
