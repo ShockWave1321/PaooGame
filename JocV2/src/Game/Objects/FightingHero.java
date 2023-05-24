@@ -9,19 +9,21 @@ import java.util.ArrayList;
 
 public class FightingHero extends Character
 {
-    static float x = 275;
-    static float y = 600;
+    static float xsp = 275;
+    static float ysp = 600;
 
+    private int HEALTH_CAP = 10;
+    private int MANA_CAP = 3;
     float currentSpeed;
     Animation animation;
     KeyManager keyManager;
     private final ArrayList<Ability> abilities;
     int mana;
     int pressed = 0, hold = 0;
-    int t = 0;
+    int timer = 0;
     public FightingHero(Hero hero)
     {
-        super(null, x, y, hero.width, hero.height);
+        super(null, xsp, ysp, hero.width, hero.height);
         bounds = new Rectangle(hero.GetBounds());
         speed = hero.GetSpeed();
         health = hero.GetHealth();
@@ -65,15 +67,26 @@ public class FightingHero extends Character
                 }
             }
         }
-        /*if(t>60)
+        if(timer>60)
         {
-            System.out.println((int)x+"|"+(int)y+"|"+xMove+"|"+yMove);
-            t = 0;
+            //System.out.println((int)x+"|"+(int)y+"|"+xMove+"|"+yMove);
+            System.out.println(this.GetX());
+            timer = 0;
         }
-        t++;*/
+        timer++;
+
     }
     public void Move()
     {
+        if(xMove == 1)
+        {
+            lastDir = true;
+        }
+        else
+        if(xMove == -1)
+        {
+            lastDir = false;
+        }
         x +=xMove * currentSpeed;
         y +=yMove * currentSpeed;
     }
@@ -153,5 +166,31 @@ public class FightingHero extends Character
             }
         }
         return hit;
+    }
+    public void SetMana(int mana)
+    {
+        if(mana <= MANA_CAP)
+            this.mana = mana;
+    }
+    public void ManaRegen()
+    {
+        if(timer % 3 * second == 0)
+        {
+            SetMana(mana+1);
+        }
+    }
+    public void SetHealth(int hp)
+    {
+        if(hp <= HEALTH_CAP)
+        {
+            health = hp;
+        }
+    }
+    public void HealthRegen()
+    {
+        if(timer % 10 * second == 0)
+        {
+            SetHealth(health + 1);
+        }
     }
 }

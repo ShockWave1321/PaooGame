@@ -11,7 +11,6 @@ import Game.RefLinks;
 
 public class Hero extends Character
 {
-    static final int second = 60;
     private int HEALTH_CAP = 10;
     private int MANA_CAP = 3;
     private final int screenX;

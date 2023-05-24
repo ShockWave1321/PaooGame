@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 
 public abstract class Character extends Item
 {
+    static final int second = 60;
     public static final int DEFAULT_HEALTH = 10;
     public static final float DEFAULT_SPEED         = 1.0f;
     public static final int DEFAULT_CREATURE_WIDTH  = 32;
