@@ -71,10 +71,9 @@ public class PauseState extends State
 
         for(int i = 0; i < options.size(); ++i)
         {
+            g.setColor(Color.white);
             if(currentOption == i)
                 g.setColor(Color.blue);
-            else
-                g.setColor(Color.white);
             g.drawString(options.get(i), refLink.GetWidth()/2 - 100,refLink.GetHeight()/2+i*40);
         }
     }

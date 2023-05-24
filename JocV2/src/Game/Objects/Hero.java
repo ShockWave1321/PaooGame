@@ -24,17 +24,17 @@ public class Hero extends Character
     private final int ABILITIES_CAP = 3;
     private final ArrayList<Ability> abilities;
     float defaultSpeed;
-    int pressed = 0,hold = 0;
+    int pressed = 0, hold = 0;
     int timer = 0;
+
     public Hero(RefLinks refLink, float x, float y)
     {
         super(refLink, x, y, Character.DEFAULT_CREATURE_WIDTH, Character.DEFAULT_CREATURE_HEIGHT);
 
-        image = Assets.heroUp;
-        normalBounds.x = 10;
-        normalBounds.y = 12;
-        normalBounds.width = 12;
-        normalBounds.height = 18;
+        normalBounds.x = 6;
+        normalBounds.y = 2;
+        normalBounds.width = 20;
+        normalBounds.height = 28;
 
         attackBounds.x = 12;
         attackBounds.y = 14;
@@ -63,9 +63,9 @@ public class Hero extends Character
         GetInput();
         collCheck.checkMapCollision();
         Move();
+        animation.animate(this);
         HealthRegen();
         ManaRegen();
-        animation.animate(this);
         if(!abilities.isEmpty())
         {
             for(int i = 0; i<abilities.size(); ++i)
@@ -101,20 +101,23 @@ public class Hero extends Character
     {
         xMove = 0;
         yMove = 0;
-        this.SetNormalMode();
         speed = defaultSpeed;
 
         pressed = 0;
         if(refLink.GetKeyManager().attack)
         {
-            this.SetAttackMode();
-            pressed = 1;
-            if(hold == 0)
+            if(cooldown <= 0)
             {
-                abilities.add(new IceDaggers(this, x, y));
-                System.out.println("Fired");
+                pressed = 1;
+                if (hold == 0)
+                {
+                    abilities.add(new IceDaggers(this, x, y));
+                    System.out.println("Fired");
+                }
             }
         }
+        if(cooldown > 0)
+            cooldown--;
         hold = pressed;
 
         if(refLink.GetKeyManager().shift)
@@ -141,7 +144,7 @@ public class Hero extends Character
     @Override
     public void Draw(Graphics g)
     {
-        //zg.drawImage(image, (int)x, (int)y, width, height, null);
+        g.drawImage(image, (int)x, (int)y, width, height, null);
         if(!abilities.isEmpty())
         {
             for(Ability a : abilities)
@@ -149,10 +152,10 @@ public class Hero extends Character
                 a.Draw(g);
             }
         }
-        g.setColor(Color.red);
+        //g.setColor(Color.red);
         //g.drawRect((int)x, (int)y, width, height);
         //g.setColor(Color.blue);
-        g.drawRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
+        //g.drawRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
     }
     public int GetScreenX()
     {
@@ -205,17 +208,14 @@ public class Hero extends Character
             }
         }
     }
-    public Hero PrebattleHero(Hero hero)
-    {
-        return hero;
-    }
-    public boolean CheckBulletCollision(Item item)
+    public boolean CheckAbilityCollision(Character character)
     {
         boolean hit = false;
         for(Ability a : abilities)
         {
-            if(a.Hits(item))
+            if(a.Hits(character))
             {
+                a.Damage(character);
                 hit = true;
             }
         }

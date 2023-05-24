@@ -11,22 +11,21 @@ public class FightingHero extends Character
 {
     static float x = 275;
     static float y = 600;
-    static int scaleFactor = 2;
-    float speed, currentSpeed;
+
+    float currentSpeed;
     Animation animation;
     KeyManager keyManager;
     private final ArrayList<Ability> abilities;
-    int health, mana;
-    int pressed = 0,hold = 0;
+    int mana;
+    int pressed = 0, hold = 0;
     int t = 0;
     public FightingHero(Hero hero)
     {
-        super(null, x, y, hero.GetWidth(), hero.GetHeight());
+        super(null, x, y, hero.width, hero.height);
         bounds = new Rectangle(hero.GetBounds());
         speed = hero.GetSpeed();
         health = hero.GetHealth();
         mana = hero.GetMana();
-        Scale();
 
         animation = new Animation(this, Assets.heroRun);
         this.keyManager = hero.refLink.GetKeyManager();
@@ -48,11 +47,12 @@ public class FightingHero extends Character
     }
     public void Update()
     {
+        GetInput();
         Move();
         animation.animate(this);
         if(!abilities.isEmpty())
         {
-            for(int i = 0; i<abilities.size(); ++i)
+            for(int i = 0; i < abilities.size(); ++i)
             {
                 if(abilities.get(i).IsFired())
                 {
@@ -61,33 +61,45 @@ public class FightingHero extends Character
                 else
                 {
                     abilities.remove(abilities.get(i));
-                    System.out.println("removed");
+                    //System.out.println("removed");
                 }
             }
         }
-        if(t>60)
+        /*if(t>60)
         {
             System.out.println((int)x+"|"+(int)y+"|"+xMove+"|"+yMove);
             t = 0;
         }
-        t++;
+        t++;*/
     }
     public void Move()
+    {
+        x +=xMove * currentSpeed;
+        y +=yMove * currentSpeed;
+    }
+    public void GetInput()
     {
         xMove = 0;
         yMove = 0;
         currentSpeed = speed;
+
         pressed = 0;
         if(keyManager.attack)
         {
-            pressed = 1;
-            if(hold == 0)
+            if(cooldown <= 0)
             {
-                abilities.add(new IceDaggers(this, x, y));
-                System.out.println("Fired");
+                pressed = 1;
+                if (hold == 0)
+                {
+                    abilities.add(new IceDaggers(this, x, y));
+                    //System.out.println("Fired");
+                }
             }
         }
+        if(cooldown > 0)
+            cooldown--;
         hold = pressed;
+
         if(keyManager.shift)
         {
             currentSpeed = speed * 2;
@@ -116,26 +128,6 @@ public class FightingHero extends Character
         {
             xMove = 0;
         }
-        x +=xMove * currentSpeed;
-        y +=yMove * currentSpeed;
-    }
-    public void Scale()
-    {
-        bounds.x *= scaleFactor;
-        bounds.y *= scaleFactor;
-        bounds.width *= scaleFactor;
-        bounds.height *= scaleFactor;
-        width *= scaleFactor;
-        height *= scaleFactor;
-    }
-    public void ReScale()
-    {
-        bounds.x /= scaleFactor;
-        bounds.y /= scaleFactor;
-        bounds.width /= scaleFactor;
-        bounds.height /= scaleFactor;
-        width /= scaleFactor;
-        height /= scaleFactor;
     }
     public int GetHealth()
     {
@@ -149,5 +141,17 @@ public class FightingHero extends Character
     {
         return speed;
     }
-
+    public boolean CheckAbilityCollision(Character character)
+    {
+        boolean hit = false;
+        for(Ability a : abilities)
+        {
+            if(a.Hits(character))
+            {
+                a.Damage(character);
+                hit = true;
+            }
+        }
+        return hit;
+    }
 }

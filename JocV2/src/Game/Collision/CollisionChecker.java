@@ -61,17 +61,22 @@ public class CollisionChecker
     }
     public boolean CheckItemCollision(Item item)
     {
-        int crx = (int)character.GetX();
-        int cry = (int)character.GetY();
-        int crw = character.GetWidth();
-        int crh = character.GetHeight();
+        /*Rectangle crr = character.WorldBounds();
+        int crx = crr.x;
+        int cry = crr.y;
+        int crw = crr.width;
+        int crh = crr.height;
         int crS = (int)character.GetSpeed();
         Rectangle ri = item.WorldBounds();
 
         return new Rectangle(crx + crS, cry, crw, crh).intersects(ri) ||
                 new Rectangle(crx - crS, cry, crw, crh).intersects(ri) ||
                 new Rectangle(crx,cry + crS, crw, crh).intersects(ri) ||
-                new Rectangle(crx,cry - crS, crw, crh).intersects(ri);
+                new Rectangle(crx,cry - crS, crw, crh).intersects(ri);*/
+        Rectangle crr = character.WorldBounds();
+        Rectangle ri = item.WorldBounds();
+
+        return crr.intersects(ri);
     }
 
 }

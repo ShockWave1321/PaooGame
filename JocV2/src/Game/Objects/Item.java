@@ -72,16 +72,21 @@ public abstract class Item
     {
         bounds = attackBounds;
     }
-    public Rectangle GetBounds() {
+    public Rectangle GetBounds()
+    {
         return bounds;
     }
     public Rectangle WorldBounds()
     {
-        return new Rectangle(bounds.x + (int)x,bounds.y + (int)y, bounds.width, bounds.height);
+        return new Rectangle((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
     }
-    public void Scale(int factor)
+    public void Scale(float factor)
     {
         width *= factor;
         height *= factor;
+        bounds.x *= factor;
+        bounds.y *= factor;
+        bounds.width *= factor;
+        bounds.height *= factor;
     }
 }

@@ -1,7 +1,6 @@
 package Game.Objects;
 
 import Game.Graphics.Assets;
-import Game.RefLinks;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,8 +22,12 @@ public class IceDaggers extends Ability
         bounds.y = 10;
         bounds.width = 22;
         bounds.height = 12;
+        cooldown = Ability.second;
 
+
+        damage = 3;
         fired = true;
+        character.cooldown = cooldown;
     }
 
     @Override
@@ -59,7 +62,7 @@ public class IceDaggers extends Ability
         {
             g.drawImage(cadre[1][cadru], (int) x, (int) y, DEFAULT_ABILITY_WIDTH * 2, DEFAULT_ABILITY_HEIGHT * 2, null);
         }
-        g.setColor(Color.red);
-        g.drawRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
+        //g.setColor(Color.red);
+        //g.drawRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
     }
 }

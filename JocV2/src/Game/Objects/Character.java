@@ -17,6 +17,7 @@ public abstract class Character extends Item
     protected float speed;
     protected float xMove;
     protected float yMove;
+    protected float cooldown;
     boolean lastDir;
 
     public Character(RefLinks refLink, float x, float y, int width, int height)
@@ -93,5 +94,9 @@ public abstract class Character extends Item
     public void SetYMove(float yMove)
     {
         this.yMove = yMove;
+    }
+    public boolean IsDead()
+    {
+        return health <= 0;
     }
 }

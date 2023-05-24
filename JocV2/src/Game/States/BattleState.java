@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 
 public class BattleState extends State
 {
+    static int scaleFactor = 2;
     BufferedImage background = Assets.battleMap;
     private final Hero hero;
     private final FightingHero fHero;
@@ -37,16 +38,28 @@ public class BattleState extends State
             PostBattleSetup();
             State.SetState(State.PreviousState());
         }
+        if(fHero.CheckAbilityCollision(enemy))
+        {
+            System.out.println("Enemy hit, health: "+ enemy.GetHealth());
+            if(enemy.IsDead())
+            {
+                State.SetState(State.PreviousState());
+            }
+        }
     }
     void PreBattleSetup()
     {
+        fHero.Scale(scaleFactor);
 
+        enemy.SetX(fHero.GetX() + 800);
+        enemy.SetY(fHero.GetY() - 50);
+        enemy.Scale(scaleFactor);
     }
     void PostBattleSetup()
     {
+        fHero.Scale(1.f/scaleFactor);
         hero.SetMana(fHero.GetMana());
         hero.SetHealth(fHero.GetHealth());
-        fHero.ReScale();
     }
     @Override
     public void Draw(Graphics g)

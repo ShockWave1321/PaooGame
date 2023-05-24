@@ -13,7 +13,6 @@ public class Enemy extends Character
     static final int seconds = 60;
     private final CollisionChecker collCheck;
     private final Animation animation;
-    boolean dead;
     Random movement;
     int nextMove = 121;
     public Enemy(RefLinks refLink, float x, float y)
@@ -30,8 +29,8 @@ public class Enemy extends Character
         attackBounds.height = 20;
         collCheck = new CollisionChecker(refLink,this);
 
-        dead = false;
         speed = 1.f;
+        health = 10;
         movement = new Random();
         animation = new Animation(this, Assets.monster);
     }
@@ -40,9 +39,10 @@ public class Enemy extends Character
     public void Update()
     {
         collCheck.checkMapCollision();
-        RandomMove1();
+        //RandomMove1();
         Move();
         animation.animate();
+        //System.out.println("Inamic prezent");
     }
 
     public void RandomMove()
@@ -101,9 +101,5 @@ public class Enemy extends Character
         g.setColor(Color.red);
         //g.fillRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
         g.drawRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
-    }
-    public boolean IsDead()
-    {
-        return dead;
     }
 }

@@ -1,12 +1,7 @@
 package Game.AnimationManager;
 
-import Game.Graphics.Assets;
-import Game.Input.KeyManager;
 import Game.Objects.Character;
-import Game.Objects.Hero;
-import Game.RefLinks;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Animation
@@ -71,7 +66,6 @@ public class Animation
             if(cadru >= cadre[dir].length)
                 cadru = 0;
             t = 0;
-            System.out.println(cadru);
         }
         character.SetImage(cadre[dir][cadru]);
         t++;

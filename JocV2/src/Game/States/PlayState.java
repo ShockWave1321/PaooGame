@@ -1,6 +1,5 @@
 package Game.States;
 
-import Game.Graphics.Assets;
 import Game.Map.Map;
 import Game.Objects.Character;
 import Game.Objects.Enemy;
@@ -16,7 +15,6 @@ public class PlayState extends State
     private final Hero hero;
     private final Map map;
     private final ArrayList<Character> characters;
-    boolean fight = false;
     Font font;
     public PlayState(RefLinks refLink)
     {
@@ -46,7 +44,7 @@ public class PlayState extends State
                     ((NPC) characters.get(i)).Interact1();
                 }
                 else
-                if(hero.CheckBulletCollision(characters.get(i)))
+                if(hero.CheckAbilityCollision(characters.get(i)))
                 {
                     ((NPC) characters.get(i)).Interact2();
                 }
@@ -60,6 +58,7 @@ public class PlayState extends State
             {
                 if(hero.CheckItemCollision(characters.get(i)))
                 {
+                    //System.out.println("Touches");
                     State.SetState(new BattleState(refLink, (Enemy) characters.get(i)));
                     characters.remove(characters.get(i));
                 }
