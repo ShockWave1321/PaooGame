@@ -16,7 +16,6 @@ public class BattleState extends State
     private final Hero hero;
     private final FightingHero fHero;
     private final Enemy enemy;
-
     public BattleState(RefLinks refLink, Enemy enemy)
     {
         super(refLink);
@@ -24,7 +23,6 @@ public class BattleState extends State
         this.enemy = enemy;
 
         fHero = new FightingHero(hero);
-
         PreBattleSetup();
     }
 
@@ -43,6 +41,7 @@ public class BattleState extends State
             System.out.println("Enemy hit, health: "+ enemy.GetHealth());
             if(enemy.IsDead())
             {
+                PostBattleSetup();
                 State.SetState(State.PreviousState());
             }
         }

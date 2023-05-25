@@ -11,8 +11,8 @@ import Game.RefLinks;
 
 public class Hero extends Character
 {
-    private int HEALTH_CAP = 10;
-    private int MANA_CAP = 3;
+    private int HEALTH_CAP = 5;
+    private int MANA_CAP = 10;
     private final int screenX;
     private final int screenY;
     private final Animation animation;
@@ -62,9 +62,9 @@ public class Hero extends Character
         GetInput();
         collCheck.checkMapCollision();
         Move();
-        animation.animate(this);
         HealthRegen();
         ManaRegen();
+        animation.animate(this);
         if(!abilities.isEmpty())
         {
             for(int i = 0; i<abilities.size(); ++i)
@@ -112,6 +112,21 @@ public class Hero extends Character
                 {
                     abilities.add(new IceDaggers(this, x, y));
                     System.out.println("Fired");
+                }
+            }
+        }
+        if(refLink.GetKeyManager().k1)
+        {
+            if(cooldown <= 0)
+            {
+                pressed = 1;
+                if (hold == 0)
+                {
+                    if(this.mana >= Slash.manaCost)
+                    {
+                        abilities.add(new Slash(this, x, y));
+                        System.out.println("Fired");
+                    }
                 }
             }
         }
@@ -229,7 +244,7 @@ public class Hero extends Character
     {
         if(timer % 3 * second == 0)
         {
-            SetMana(mana+1);
+            SetMana(mana + 1);
         }
     }
     public void SetHealth(int hp)

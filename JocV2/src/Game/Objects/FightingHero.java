@@ -11,16 +11,11 @@ public class FightingHero extends Character
 {
     static float xsp = 275;
     static float ysp = 600;
-
-    private int HEALTH_CAP = 10;
-    private int MANA_CAP = 3;
     float currentSpeed;
     Animation animation;
     KeyManager keyManager;
     private final ArrayList<Ability> abilities;
-    int mana;
     int pressed = 0, hold = 0;
-    int timer = 0;
     public FightingHero(Hero hero)
     {
         super(null, xsp, ysp, hero.width, hero.height);
@@ -44,13 +39,14 @@ public class FightingHero extends Character
                 a.Draw(g);
             }
         }
-        //g.setColor(Color.blue);
-        //g.fillRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
+        UI(g);
     }
     public void Update()
     {
         GetInput();
         Move();
+        HealthRegen();
+        ManaRegen();
         animation.animate(this);
         if(!abilities.isEmpty())
         {
@@ -67,14 +63,16 @@ public class FightingHero extends Character
                 }
             }
         }
-        if(timer>60)
+        if(timer % second == 0)
         {
             //System.out.println((int)x+"|"+(int)y+"|"+xMove+"|"+yMove);
-            System.out.println(this.GetX());
+            System.out.println(mana);
+        }
+        if(timer > manaRegen * healthRegen)
+        {
             timer = 0;
         }
         timer++;
-
     }
     public void Move()
     {
@@ -87,8 +85,8 @@ public class FightingHero extends Character
         {
             lastDir = false;
         }
-        x +=xMove * currentSpeed;
-        y +=yMove * currentSpeed;
+        x += xMove * currentSpeed;
+        y += yMove * currentSpeed;
     }
     public void GetInput()
     {
@@ -104,8 +102,25 @@ public class FightingHero extends Character
                 pressed = 1;
                 if (hold == 0)
                 {
-                    abilities.add(new IceDaggers(this, x, y));
-                    //System.out.println("Fired");
+                    if(this.mana >= IceDaggers.manaCost)
+                    {
+                        abilities.add(new IceDaggers(this, x, y));
+                        //System.out.println("Fired");
+                    }
+                }
+            }
+        }
+        if(keyManager.k1)
+        {
+            if(cooldown <= 0)
+            {
+                pressed = 1;
+                if (hold == 0)
+                {
+                    if(this.mana >= Slash.manaCost)
+                    {
+                        abilities.add(new Slash(this, x, y));
+                    }
                 }
             }
         }
@@ -142,18 +157,6 @@ public class FightingHero extends Character
             xMove = 0;
         }
     }
-    public int GetHealth()
-    {
-        return health;
-    }
-    public int GetMana()
-    {
-        return mana;
-    }
-    public float GetSpeed()
-    {
-        return speed;
-    }
     public boolean CheckAbilityCollision(Character character)
     {
         boolean hit = false;
@@ -167,30 +170,23 @@ public class FightingHero extends Character
         }
         return hit;
     }
-    public void SetMana(int mana)
+    public void UI(Graphics g)
     {
-        if(mana <= MANA_CAP)
-            this.mana = mana;
-    }
-    public void ManaRegen()
-    {
-        if(timer % 3 * second == 0)
+        for(int i = 0; i < health; ++i)
         {
-            SetMana(mana+1);
+            g.setColor(Color.GREEN);
+            g.fillRect(40 + 50 * i,50,50,25);
+            g.setColor(Color.black);
+            g.drawRect(40 + 50 * i,50,50,25);
         }
-    }
-    public void SetHealth(int hp)
-    {
-        if(hp <= HEALTH_CAP)
+        for(int i = 0; i < mana; ++i)
         {
-            health = hp;
+            g.setColor(Color.blue);
+            g.fillRect(40 + 30 * i,80,30,15);
+            g.setColor(Color.black);
+            g.drawRect(40 + 30 * i,80,30,15);
         }
-    }
-    public void HealthRegen()
-    {
-        if(timer % 10 * second == 0)
-        {
-            SetHealth(health + 1);
-        }
+        //g.setColor(Color.blue);
+        //g.fillRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
     }
 }

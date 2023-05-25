@@ -1,6 +1,7 @@
 package Game.AnimationManager;
 
 import Game.Objects.Character;
+import Game.Objects.Enemy;
 
 import java.awt.image.BufferedImage;
 
@@ -50,15 +51,27 @@ public class Animation
         }
         t++;
     }
-    public void animate()
+    public void animate(Enemy enemy)
     {
         float characterX = character.GetXMove();
         animSpeed = CONST_SPEED/((int)character.GetSpeed()*2);
-        if (characterX > 0) {
-            dir = 0;
-        } else
-        if (characterX < 0) {
-            dir = 4;
+        if(((Enemy)character).IsAttacking())
+        {
+            if (characterX > 0) {
+                dir = 1;
+            } else
+            if (characterX < 0) {
+                dir = 5;
+            }
+        }
+        else
+        {
+            if (characterX > 0) {
+                dir = 0;
+            } else
+            if (characterX < 0) {
+                dir = 4;
+            }
         }
         if (t > animSpeed)
         {

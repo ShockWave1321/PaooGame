@@ -7,7 +7,6 @@ public abstract class Ability extends Item {
     static final int DEFAULT_ABILITY_WIDTH = 24;
     static final int DEFAULT_ABILITY_HEIGHT = 16;
     int range = 600;
-    int manaCost = 1;
     float cooldown = second;
     float speed = 10.f;
     boolean fired;
@@ -34,10 +33,6 @@ public abstract class Ability extends Item {
     public void Damage(Character character)
     {
         character.health -= damage;
-    }
-    public int GetManaCost()
-    {
-        return manaCost;
     }
     public float GetCooldown()
     {

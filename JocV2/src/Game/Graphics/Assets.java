@@ -9,10 +9,10 @@ public class Assets
                                 Void, heroLeft, heroRight, heroUp, heroDown,
                                 heroUpRunLeft, heroUpRunRight, heroLeftRunLeft, heroLeftRunRight,
                                 heroRightRunLeft, heroRightRunRight, heroDownRunLeft, heroDownRunRight,
-                                girlFront, battleMap;
+                                girlFront, battleMap, chest, coin, scroll;
 
     public static BufferedImage[] heroRunLeft, heroRunRight, heroRunUp, heroRunDown, monsterLeft, monsterRight;
-    public static BufferedImage[][] heroRun, iceDagger, monster;
+    public static BufferedImage[][] heroRun, iceDagger, monster, slash;
     public static void Init()
     {
         SpriteSheet sheet = new SpriteSheet(ImageLoader.LoadImage("/WorldMap/MapSpriteSheet.png"));
@@ -106,5 +106,18 @@ public class Assets
             monster[3][i] = monsterSheet.crop(i,3,64,64);
             monster[7][i] = monsterSheet.crop(7-i,7,64,64);
         }
+        SpriteSheet chestsSheet = new SpriteSheet(ImageLoader.LoadImage("/Items/Chests.png"));
+        chest = chestsSheet.crop(4,0);
+
+        SpriteSheet slashSheet = new SpriteSheet(ImageLoader.LoadImage("/Abilities/Slash.png"));
+        slash = new BufferedImage[2][3];
+        for(int i = 0; i < 3; ++i)
+        {
+            slash[0][i] = slashSheet.crop(i,2,64,64);
+            slash[1][i] = slashSheet.crop(i,1,64,64);
+        }
+
+        coin = ImageLoader.LoadImage("/Items/StaticCoin.png");
+        scroll = ImageLoader.LoadImage("/Items/StaticScroll.png");
     }
 }

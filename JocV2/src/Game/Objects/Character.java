@@ -12,6 +12,9 @@ public abstract class Character extends Item
     public static final float DEFAULT_SPEED         = 1.0f;
     public static final int DEFAULT_CREATURE_WIDTH  = 32;
     public static final int DEFAULT_CREATURE_HEIGHT = 32;
+    private int HEALTH_CAP = 5;
+    private int MANA_CAP = 10;
+    int mana, manaRegen = 3 * second, healthRegen = 5 * second;
 
     protected BufferedImage image;
     protected int health;
@@ -20,6 +23,7 @@ public abstract class Character extends Item
     protected float yMove;
     protected float cooldown;
     boolean lastDir;
+    int timer = 10000;
 
     public Character(RefLinks refLink, float x, float y, int width, int height)
     {
@@ -69,13 +73,13 @@ public abstract class Character extends Item
     {
         return health;
     }
+    public int GetMana()
+    {
+        return health;
+    }
     public float GetSpeed()
     {
         return speed;
-    }
-    public void SetHealth(int health)
-    {
-        this.health = health;
     }
     public void SetSpeed(float speed) {
         this.speed = speed;
@@ -99,5 +103,33 @@ public abstract class Character extends Item
     public boolean IsDead()
     {
         return health <= 0;
+    }
+    public void SetMana(int mana)
+    {
+        if(mana <= MANA_CAP)
+        {
+            this.mana = mana;
+        }
+    }
+    public void ManaRegen()
+    {
+        if(timer % manaRegen == 0)
+        {
+            SetMana(mana+1);
+        }
+    }
+    public void SetHealth(int hp)
+    {
+        if(hp <= HEALTH_CAP)
+        {
+            health = hp;
+        }
+    }
+    public void HealthRegen()
+    {
+        if(timer % healthRegen == 0)
+        {
+            SetHealth(health + 1);
+        }
     }
 }
