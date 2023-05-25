@@ -176,6 +176,7 @@ public class DataBase
                     "yPos REAL, " +
                     "health INTEGER, " +
                     "mana INTEGER, " +
+                    "level INTEGER, " +
                     "experience INTEGER, " +
                     "money INTEGER" +
                     ")";
@@ -193,14 +194,14 @@ public class DataBase
         }
         System.out.println("Character table created successfully");
     }
-    public void InsertCharacterRecord(float xPos, float yPos, int health, int mana, int experience, int money)
+    public void InsertCharacterRecord(float xPos, float yPos, int health, int mana, int level, int experience, int money)
     {
         GetConnection(database);
         try {
             c.setAutoCommit(false);
             stmt = c.createStatement();
 
-            String sql = "INSERT INTO HERO (xPos, yPos, health, mana, experience, money) VALUES ("+xPos+","+yPos+","+health+","+mana+","+experience+","+money+")";
+            String sql = "INSERT INTO HERO (xPos, yPos, health, mana, level, experience, money) VALUES ("+xPos+","+yPos+","+health+","+mana+","+level+","+experience+","+money+")";
 
             stmt.execute(sql);
             stmt.close();
@@ -211,7 +212,7 @@ public class DataBase
             System.exit(0);
         }
     }
-    public void UpdateCharacterRecord(int id, float xPos, float yPos, int health, int mana, int experience, int money)
+    public void UpdateCharacterRecord(int id, float xPos, float yPos, int health, int mana, int level, int experience, int money)
     {
         GetConnection(database);
         try {
@@ -222,6 +223,7 @@ public class DataBase
                     + ", yPos = " + yPos
                     + ", health = " + health
                     + ", mana = " + mana
+                    + ", level = " + level
                     + ", experience = " + experience
                     + ", money = " + money
                     + " WHERE id = " + id;
@@ -260,6 +262,7 @@ public class DataBase
                 map.put("yPos", rs.getFloat("yPos"));
                 map.put("health", rs.getInt("health"));
                 map.put("mana", rs.getInt("mana"));
+                map.put("level", rs.getInt("level"));
                 map.put("experience", rs.getInt("experience"));
                 map.put("money", rs.getInt("money"));
             }
@@ -326,17 +329,9 @@ public class DataBase
     public void InitDataBase()
     {
         CreateCharacterTable();
-        /*InsertCharacterRecord(15.f,15.f,10,5,20,20);
-        UpdateCharacterRecord(1,10.f,10.f,8,5,10,40);
-        DeleteCharacterRecord(2);
-        Map<String,Object> map = SelectCharacterRecord(3);
-        System.out.println((int)map.get("experience"));
-        DeleteTable("HERO");*/
     }
-    //DeleteDB("Map1");
-    //DeleteDB("Map2");
-    //DeleteDB("test_map");
-    //CreateMapDatabase("Map1");
-    //CreateMapDatabase("Map2");
-    //CreateMapDatabase("test_map");
+    public void DeleteDB()
+    {
+        DeleteTable("HERO");
+    }
 }

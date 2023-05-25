@@ -160,24 +160,13 @@ public class Hero extends Character
                 }
             }
         }
-        if(refLink.GetKeyManager().k3)
-        {
-            if(cooldown <= 0)
-            {
-                pressed = 1;
-                if (hold == 0)
-                {
-                    experience += 10;
-                }
-            }
-        }
         if(cooldown > 0)
             cooldown--;
         hold = pressed;
 
         if(refLink.GetKeyManager().shift)
         {
-            speed = speed * 4;
+            speed = speed * 2;
         }
         if(refLink.GetKeyManager().up)
         {

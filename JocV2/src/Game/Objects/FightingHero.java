@@ -16,6 +16,7 @@ public class FightingHero extends Character
     KeyManager keyManager;
     private final ArrayList<Ability> abilities;
     int pressed = 0, hold = 0;
+    int level;
     public FightingHero(Hero hero)
     {
         super(null, xsp, ysp, hero.width, hero.height);
@@ -23,6 +24,7 @@ public class FightingHero extends Character
         speed = hero.GetSpeed();
         health = hero.GetHealth();
         mana = hero.GetMana();
+        level = hero.GetLevel();
 
         animation = new Animation(this, Assets.heroRun);
         this.keyManager = hero.refLink.GetKeyManager();
@@ -102,25 +104,35 @@ public class FightingHero extends Character
                 pressed = 1;
                 if (hold == 0)
                 {
-                    if(this.mana >= IceDaggers.manaCost)
+                    if(this.mana >= Slash.manaCost)
                     {
-                        abilities.add(new IceDaggers(this, x, y));
-                        //System.out.println("Fired");
+                        abilities.add(new Slash(this, x, y));
+                       // System.out.println("Fired");
                     }
                 }
             }
         }
-        if(keyManager.k1)
+        if(keyManager.k1 && level > 0)
         {
             if(cooldown <= 0)
             {
                 pressed = 1;
                 if (hold == 0)
                 {
-                    if(this.mana >= Slash.manaCost)
-                    {
-                        abilities.add(new Slash(this, x, y));
-                    }
+                    abilities.add(new IceDaggers(this, x, y));
+                   // System.out.println("Fired");
+                }
+            }
+        }
+        if(keyManager.k2 && level > 1)
+        {
+            if(cooldown <= 0)
+            {
+                pressed = 1;
+                if (hold == 0)
+                {
+                    abilities.add(new IceEruption(this, x, y));
+                    //System.out.println("Fired");
                 }
             }
         }

@@ -24,7 +24,7 @@ public class PlayState extends State
     {
         super(refLink);
 
-        hero = new Hero(refLink, 6 * 32, 15 * 32); //23*48 = 1104  27*48 = 1296 || 8 * 32, 43 * 32
+        hero = new Hero(refLink, 8 * 32, 43 * 32); //23*48 = 1104  27*48 = 1296 || 8 * 32, 43 * 32
         refLink.setHero(hero);
 
         map = new Map(refLink);

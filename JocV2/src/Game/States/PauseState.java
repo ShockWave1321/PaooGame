@@ -11,15 +11,15 @@ public class PauseState extends State
     private static int currentOption = 0;
     Font menuFont;
     Vector<String> options;
-
+    Color selectColor;
     public PauseState(RefLinks refLink)
     {
         super(refLink);
         menuFont = new Font("Arial", Font.PLAIN,40);
+        selectColor = new Color(86, 20, 20, 255);
         options = new Vector<>();
         options.add("Resume");
         options.add("Save Game");
-        options.add("Options");
         options.add("Exit");
     }
 
@@ -73,7 +73,7 @@ public class PauseState extends State
         {
             g.setColor(Color.white);
             if(currentOption == i)
-                g.setColor(Color.blue);
+                g.setColor(selectColor);
             g.drawString(options.get(i), refLink.GetWidth()/2 - 100,refLink.GetHeight()/2+i*40);
         }
     }

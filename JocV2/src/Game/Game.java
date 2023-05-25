@@ -3,6 +3,7 @@ package Game;
 import Game.DataBase.DataBase;
 import Game.GameWindow.GameWindow;
 import Game.Input.KeyManager;
+import Game.Objects.Hero;
 import Game.States.*;
 import Game.Graphics.Assets;
 import java.awt.*;
@@ -20,8 +21,7 @@ public class Game implements Runnable
 
     private State playState;
     private State menuState;
-    private State settingsState;
-    private State aboutState;
+    private State infoState;
     private State pauseState;
     private KeyManager keyManager;
     private RefLinks refLink;
@@ -43,12 +43,10 @@ public class Game implements Runnable
 
         playState       = new PlayState(refLink);
         menuState       = new MenuState(refLink);
-        settingsState   = new SettingsState(refLink);
-        aboutState      = new AboutState(refLink);
+        infoState      = new InfoState(refLink);
         pauseState      = new PauseState(refLink);
 
-        //State.SetState(menuState);
-        State.SetState(playState);
+        State.SetState(menuState);
     }
 
     public static Game InitGame()
@@ -174,12 +172,17 @@ public class Game implements Runnable
             {
                 if (State.GetState() == menuState)
                 {
-                    switch (MenuState.getCurrentOption()) {
+                    switch (MenuState.getCurrentOption())
+                    {
                         case 0 -> {
                             playState = new PlayState(refLink);
                             State.SetState(playState);
                         }
                         case 1 -> State.SetState(playState);
+                        case 2 -> {
+                            database.DeleteDB();
+                        }
+                        case 3 -> State.SetState(infoState);
                         case 4 -> {
                             //StopGame();
                             System.exit(0);
@@ -191,9 +194,27 @@ public class Game implements Runnable
                 {
                     switch (PauseState.GetCurrentOption()) {
                         case 0 -> State.SetState(State.PreviousState());
-                        case 3 -> State.SetState(menuState);
+                        case 1 ->{
+                            Hero hero = refLink.GetHero();
+                            database.InsertCharacterRecord(
+                                    hero.GetX(),
+                                    hero.GetY(),
+                                    hero.GetHealth(),
+                                    hero.GetMana(),
+                                    hero.GetLevel(),
+                                    hero.GetExperience(),
+                                    hero.GetMoney()
+                            );
+                            State.SetState(menuState);
+                        }
+                        case 2 -> State.SetState(menuState);
                         default -> State.SetState(pauseState);
                     }
+                }
+                else
+                if(State.GetState() == infoState)
+                {
+                    State.SetState(State.PreviousState());
                 }
             }
         }
@@ -209,9 +230,5 @@ public class Game implements Runnable
             pressed = 0;
         }
         hold = pressed;
-    }
-    public DataBase GetDatabase()
-    {
-        return database;
     }
 }

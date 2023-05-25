@@ -8,21 +8,23 @@ import java.util.Vector;
 public class MenuState extends State
 {
     static int pressed = 0, hold = 0;
-    int t = 0;
     private static int currentOption = 0;
     Font menuFont;
     Vector<String> options;
+    Color titleColor, selectColor;
     public MenuState(RefLinks refLink)
     {
         super(refLink);
         menuFont = new Font("Arial", Font.PLAIN,40);
+        titleColor = new Color(126, 31, 31, 255);
+        selectColor = new Color(86, 20, 20, 255);
         options = new Vector<>();
         options.add("Start");
         options.add("Load Game");
-        options.add("Options");
-        options.add("About");
+        options.add("Reset");
+        options.add("Controls");
+
         options.add("Exit");
-        options.add("Test");
     }
     @Override
     public void Update()
@@ -66,20 +68,16 @@ public class MenuState extends State
         g.fillRect(0,0, refLink.GetWidth(), refLink.GetHeight());
 
         g.setFont(menuFont);
+        g.setColor(titleColor);
+        g.drawString("Drowninig Ritm ",575,100);
         g.setColor(Color.white);
-        g.drawString("Option = " + currentOption,100,100);
-
         for(int i = 0; i < options.size(); ++i)
         {
             g.setColor(Color.white);
             if(currentOption == i)
-                g.setColor(Color.blue);
+                g.setColor(selectColor);
             g.drawString(options.get(i), refLink.GetWidth()/2 - 100,refLink.GetHeight()/2+i*40);
         }
-    }
-    public int midScreen(String s)
-    {
-        return refLink.GetWidth()/2 - menuFont.getSize() * s.length()/2;
     }
     public static int getCurrentOption()
     {

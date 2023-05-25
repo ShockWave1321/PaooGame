@@ -149,10 +149,10 @@ public class Enemy extends Character
     public void Draw(Graphics g)
     {
         g.drawImage(image, (int)x, (int)y, width, height, null);
-        g.setColor(Color.blue);
-        g.drawRect((int)x + attackBounds.x, (int)y + attackBounds.y, attackBounds.width, attackBounds.height);
-        g.setColor(Color.red);
-        g.drawRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
+        //g.setColor(Color.blue);
+        //g.drawRect((int)x + attackBounds.x, (int)y + attackBounds.y, attackBounds.width, attackBounds.height);
+        //g.setColor(Color.red);
+        //g.drawRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
         //g.fillRect((int)x + bounds.x, (int)y + bounds.y, bounds.width, bounds.height);
 
         if(fighting)
