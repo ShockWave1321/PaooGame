@@ -2,15 +2,34 @@ package Game.Map;
 
 public class Point
 {
-    int x;
-    int y;
+    int x, y;
 
-    public Point() {
+    public Point()
+    {
         this.x = 0;
         this.y = 0;
     }
-    public void setPoint(int x,int y) {
+    public Point(int x, int y)
+    {
         this.x = x;
         this.y = y;
+    }
+    public void SetPoint(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+    public Point GetPoint()
+    {
+        return new Point(x,y);
+    }
+
+    public int GetX()
+    {
+        return x;
+    }
+    public int GetY()
+    {
+        return y;
     }
 }

@@ -17,6 +17,12 @@ public abstract class Ability extends Item {
         fired = true;
         damage = 1;
     }
+    public Ability(float x, float y,int width,int height)
+    {
+        super(null, x, y , width, height);
+        fired = true;
+        damage = 1;
+    }
     public boolean IsFired()
     {
         return fired;

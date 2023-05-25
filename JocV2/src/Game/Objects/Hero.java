@@ -20,12 +20,11 @@ public class Hero extends Character
     private int experience;
     private int mana;
     private int money;
-    private final int ABILITIES_CAP = 3;
     private final ArrayList<Ability> abilities;
     float defaultSpeed;
     int pressed = 0, hold = 0;
     int timer = 0;
-
+    int level;
     public Hero(RefLinks refLink, float x, float y)
     {
         super(refLink, x, y, Character.DEFAULT_CREATURE_WIDTH, Character.DEFAULT_CREATURE_HEIGHT);
@@ -42,6 +41,7 @@ public class Hero extends Character
 
         speed = 2.0f;
         defaultSpeed = speed;
+        level = 0;
 
         screenX = (refLink.GetWidth() - Character.DEFAULT_CREATURE_WIDTH)/2;
         screenY = (refLink.GetHeight() - Character.DEFAULT_CREATURE_HEIGHT)/2;
@@ -80,6 +80,23 @@ public class Hero extends Character
                 }
             }
         }
+        if(level == 0)
+        {
+            if(experience > 50)
+            {
+                experience -= 50;
+                level++;
+            }
+        }
+        else
+        if(level == 1)
+        {
+            if(experience > 100)
+            {
+                experience -= 100;
+                level++;
+            }
+        }
     }
     public void Time()
     {
@@ -103,19 +120,8 @@ public class Hero extends Character
         speed = defaultSpeed;
 
         pressed = 0;
+
         if(refLink.GetKeyManager().attack)
-        {
-            if(cooldown <= 0)
-            {
-                pressed = 1;
-                if (hold == 0)
-                {
-                    abilities.add(new IceDaggers(this, x, y));
-                    System.out.println("Fired");
-                }
-            }
-        }
-        if(refLink.GetKeyManager().k1)
         {
             if(cooldown <= 0)
             {
@@ -130,13 +136,48 @@ public class Hero extends Character
                 }
             }
         }
+        if(refLink.GetKeyManager().k1 && level > 0)
+        {
+            if(cooldown <= 0)
+            {
+                pressed = 1;
+                if (hold == 0)
+                {
+                    abilities.add(new IceDaggers(this, x, y));
+                    System.out.println("Fired");
+                }
+            }
+        }
+        if(refLink.GetKeyManager().k2 && level > 1)
+        {
+            if(cooldown <= 0)
+            {
+                pressed = 1;
+                if (hold == 0)
+                {
+                    abilities.add(new IceEruption(this, x, y));
+                    System.out.println("Fired");
+                }
+            }
+        }
+        if(refLink.GetKeyManager().k3)
+        {
+            if(cooldown <= 0)
+            {
+                pressed = 1;
+                if (hold == 0)
+                {
+                    experience += 10;
+                }
+            }
+        }
         if(cooldown > 0)
             cooldown--;
         hold = pressed;
 
         if(refLink.GetKeyManager().shift)
         {
-            speed = speed * 2;
+            speed = speed * 4;
         }
         if(refLink.GetKeyManager().up)
         {
@@ -179,14 +220,6 @@ public class Hero extends Character
     {
         return screenY;
     }
-    public Animation GetAnimation()
-    {
-        return animation;
-    }
-    public BufferedImage GetImage()
-    {
-        return image;
-    }
     public int GetExperience()
     {
         return experience;
@@ -210,17 +243,6 @@ public class Hero extends Character
     public boolean CheckItemCollision(Item item)
     {
         return collCheck.CheckItemCollision(item);
-    }
-    public void CheckItemsCollision(Character[] characters)
-    {
-        for(Character character : characters)
-        {
-            if(collCheck.CheckItemCollision(character))
-            {
-                xMove = 0;
-                yMove = 0;
-            }
-        }
     }
     public boolean CheckAbilityCollision(Character character)
     {
@@ -260,5 +282,9 @@ public class Hero extends Character
         {
             SetHealth(health + 1);
         }
+    }
+    public int GetLevel()
+    {
+        return level;
     }
 }

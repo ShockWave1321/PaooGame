@@ -11,10 +11,14 @@ public class Tile
     public static Tile sandTile        = new SandTile(0);
     public static Tile dryTreeTile     = new DryTreeTile(1);
     public static Tile stoneTile        = new StoneTile(2);
-    public static Tile waterGrassTile         = new WaterGrassTile(3);
+    public static Tile waterGrassTile   = new WaterGrassTile(3);
     public static Tile tentTile         = new TentTile(4);
-    public static Tile towerTile         = new TowerTile(5);
+    public static Tile towerTile        = new TowerTile(5);
     public static Tile voidTile         = new VoidTile(6);
+    public static Tile lavaTile         = new LavaTile(7);
+    public static Tile centerDirtTile   = new CenterDirtTile(8);
+    public static Tile centerPavementTile = new CenterPavementTile(9);
+    public static Tile boulderTile      = new BoulderTile(10);
     public static final int TILE_WIDTH  = 32;
     public static final int TILE_HEIGHT = 32;
 

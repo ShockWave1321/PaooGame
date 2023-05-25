@@ -15,11 +15,12 @@ public class Enemy extends Character
     private final Animation animation;
     Ability ability;
     Random movement;
-    int nextMove = 121;
+    int nextMove = 0;
     boolean fighting;
     boolean attacking;
-    int lastX,lastY;
-    public Enemy(RefLinks refLink, float x, float y)
+    int lastX, lastY;
+    int level;
+    public Enemy(RefLinks refLink, float x, float y, int level)
     {
         super(refLink, x, y, 64, 64);
         normalBounds.x = 9;
@@ -35,10 +36,17 @@ public class Enemy extends Character
         collCheck = new CollisionChecker(refLink,this);
         attacking = true;
 
-        speed = 1.f;
-        health = 3;
+        speed = 1.f + level;
+        health = 3 + 2 * level;
         movement = new Random();
-        animation = new Animation(this, Assets.monster);
+        this.level = level;
+
+        switch (this.level)
+        {
+            case 2 -> animation = new Animation(this, Assets.monsterLvl2);
+            case 3 -> animation = new Animation(this, Assets.monsterLvl3);
+            default -> animation = new Animation(this, Assets.monsterLvl1);
+        }
         fighting = false;
     }
 
@@ -59,9 +67,10 @@ public class Enemy extends Character
     {
         if(!attacking)
         {
+            SetSpeed(1.f);
             if (nextMove > 2 * seconds)
             {
-                System.out.println("Wandering");
+                //System.out.println("Wandering");
                 int mv = movement.nextInt(100);
                 if (mv < 24)
                 {
@@ -116,15 +125,18 @@ public class Enemy extends Character
         Rectangle heroBounds = refLink.GetHero().WorldBounds();
         if(attacking)
         {
+            SetSpeed(2.f);
             //System.out.println("Attacking");
             if(!bounds.intersects(heroBounds))
             {
-                if (x + bounds.x < heroBounds.x) {
+                if (x + bounds.x < heroBounds.x)
+                {
                     xMove = 1;
                 } else {
                     xMove = -1;
                 }
-                if (y + bounds.y < heroBounds.y) {
+                if (y + bounds.y < heroBounds.y)
+                {
                     yMove = 1;
                 } else {
                     yMove = -1;
@@ -160,7 +172,7 @@ public class Enemy extends Character
     }
     public Item Reward()
     {
-        return new Chest(lastX + 17, lastY + 15, 10, 20);
+        return new Chest(lastX + 17, lastY + 15, 5 * level + 5, 10 + level * 5);
     }
     public void CheckMood()
     {

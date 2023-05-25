@@ -186,16 +186,16 @@ public class DataBase
             c.setAutoCommit(false);
             stmt = c.createStatement();
 
-            String sql = "CREATE TABLE IF NOT EXISTS Attributes " +
-                    "(" +
-                    "id INTEGER," +
+            String sql = "CREATE TABLE IF NOT EXISTS HERO (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "xPos REAL, " +
+                    "yPos REAL, " +
                     "health INTEGER, " +
                     "mana INTEGER, " +
                     "experience INTEGER, " +
-                    "money INTEGER," +
-                    "xPos INTEGER," +
-                    "yPos INTEGER" +
+                    "money INTEGER" +
                     ")";
+
             stmt.execute(sql);
             stmt.close();
             c.commit();
@@ -224,26 +224,35 @@ public class DataBase
             System.exit(0);
         }
     }
-    public void UpdateCharacterRecord(int id, int life, int mana, int experience, int money, int xPos, int yPos)
+    public void UpdateCharacterRecord(int id, int health, int mana, int experience, int money, int xPos, int yPos)
     {
         GetConnection(database);
         try {
             c.setAutoCommit(false);
             stmt = c.createStatement();
 
-            String sql = "UPDATE Attributes SET" +
-                    "life = "+life+", "+
-                    "mana = "+mana+", "+
-                    "experience = "+experience+", "+
-                    "money = "+money+", "+
-                    "xPos = "+xPos+", "+
-                    "yPos = "+yPos+
-                    "WHERE id = " + id + ";";
-            stmt.executeQuery(sql);
+            String sql = "UPDATE HERO SET xPos = " + xPos
+                    + ", yPos = " + yPos
+                    + ", health = " + health
+                    + ", mana = " + mana
+                    + ", experience = " + experience
+                    + ", money = " + money
+                    + " WHERE id = " + id;
+
+            int rowsUpdated = stmt.executeUpdate(sql);
+            if (rowsUpdated > 0)
+            {
+                System.out.println("Record updated successfully for ID: " + id);
+            }
+            else
+            {
+                System.out.println("Record not found for ID: " + id);
+            }
             stmt.close();
             c.commit();
             c.close();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
@@ -255,16 +264,16 @@ public class DataBase
             c.setAutoCommit(false);
             stmt = c.createStatement();
 
-            String sql = "SELECT * FROM Attributes WHERE id = " + id + ";";
+            String sql = "SELECT * FROM HERO WHERE id = " + id;
             ResultSet rs = stmt.executeQuery(sql);
             if(rs.next())
             {
+                float xPos = rs.getFloat("xPos");
+                float yPos = rs.getFloat("yPos");
                 int health = rs.getInt("health");
                 int mana = rs.getInt("mana");
                 int experience = rs.getInt("experience");
                 int money = rs.getInt("money");
-                int xPos = rs.getInt("xPos");
-                int yPos = rs.getInt("yPos");
             }
             rs.close();
             stmt.close();
@@ -275,7 +284,7 @@ public class DataBase
             System.exit(0);
         }
     }
-    public void DeleteCharacterRecord(int ident)
+    public void DeleteCharacterRecord(int id)
     {
         GetConnection(database);
         try {
@@ -283,9 +292,16 @@ public class DataBase
             {
                 c.setAutoCommit(false);
                 stmt = c.createStatement();
-                String sql = "DELETE FROM Attributes WHERE id = '" + ident + "';";
-                id--;
-                stmt.execute(sql);
+                String sql = "DELETE FROM HERO WHERE id = " + id;
+                int rowsDeleted = stmt.executeUpdate(sql);
+                if (rowsDeleted > 0)
+                {
+                    System.out.println("Record deleted successfully for ID: " + id);
+                }
+                else
+                {
+                    System.out.println("Record not found for ID: " + id);
+                }
                 stmt.close();
                 c.commit();
                 c.close();

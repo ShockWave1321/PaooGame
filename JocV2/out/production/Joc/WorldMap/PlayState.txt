@@ -2,11 +2,9 @@ package Game.States;
 
 import Game.Graphics.Assets;
 import Game.Map.Map;
-import Game.Map.Point;
 import Game.Objects.*;
 import Game.Objects.Character;
 import Game.RefLinks;
-import Game.Tiles.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -15,16 +13,15 @@ public class PlayState extends State
 {
     private final Hero hero;
     private final Map map;
-    private ArrayList<Character> characters;
-    private ArrayList<Item> items;
+    private final ArrayList<Character> characters;
+    private final ArrayList<Item> items;
     Font font;
     int width, height;
-    int currentLevel = 0;
     public PlayState(RefLinks refLink)
     {
         super(refLink);
 
-        hero = new Hero(refLink, 6 * 32, 15 * 32); //23*48 = 1104  27*48 = 1296 || 8 * 32, 43 * 32
+        hero = new Hero(refLink, 42 * 32, 46 * 32); //23*48 = 1104  27*48 = 1296 || 8 * 32, 43 * 32
         refLink.setHero(hero);
 
         map = new Map(refLink);
@@ -36,15 +33,30 @@ public class PlayState extends State
 
         characters = new ArrayList<>();
         items = new ArrayList<>();
-
-        LoadState(currentLevel);
+        int i = 0;
+        System.out.println("Start");
+        for(int j = 0;i < map.GetPoints().size();++j)
+        {
+            System.out.println(j);
+        }
+        for(; i < map.GetNPCs(); ++i)
+        {
+            characters.add(new NPC(refLink, 15 * 32, 43 * 32)); //map.GetPoints().get(i).GetPointX() * 32, map.GetPoints().get(i).GetPointY() * 32
+        }
+        for(; i < map.GetNPCs() + map.GetCharacters(); ++i)
+        {
+            characters.add(new Enemy(refLink, 32 * 2, 32 * 42));
+        }
+        for(; i < map.GetNPCs() + map.GetCharacters() + map.GetItems(); ++i)
+        {
+            items.add(new Chest(32 * 6, 32 * 42, 5, 10));
+        }
     }
 
     @Override
     public void Update()
     {
         map.Update();
-        LoadState(map.GetLevel());
         hero.Update();
         for (int i = 0; i < characters.size(); ++i)
         {
@@ -69,7 +81,7 @@ public class PlayState extends State
             {
                 if(hero.CheckItemCollision(characters.get(i)))
                 {
-                    //System.out.println("Touches");
+                    System.out.println("Touches");
                     ((Enemy) characters.get(i)).Fights();
                     State.SetState(new BattleState(refLink, (Enemy) characters.get(i)));
                     items.add(((Enemy) characters.get(i)).Reward());
@@ -135,43 +147,6 @@ public class PlayState extends State
                 (int)hero.GetX() - width/2 + 75,
                 (int)hero.GetY()- height/2 + 170
         );
-        g.drawString(
-                "World: " + currentLevel,
-                (int)hero.GetX() - width/2 + 35,
-                (int)hero.GetY()- height/2 + 210
-        );
-        g.drawString(
-                "Level: " + hero.GetLevel(),
-                (int)hero.GetX() - width/2 + 35,
-                (int)hero.GetY()- height/2 + 240
-        );
-    }
-    public void LoadState(int level)
-    {
-        if (!(level == currentLevel))
-        {
-            currentLevel = level;
-            ArrayList<Point> points = map.GetPoints();
-            characters = new ArrayList<>();
-            items = new ArrayList<>();
-            int i = 0;
-            int n = map.GetNPCs();
-            for (; i < n; ++i)
-            {
-                characters.add(new NPC(refLink, points.get(i).GetX() * Tile.TILE_WIDTH, points.get(i).GetY() * Tile.TILE_HEIGHT));
-            }
-            n += map.GetCharacters();
-            for (; i < n; ++i)
-            {
-                characters.add(new Enemy(refLink, points.get(i).GetX() * Tile.TILE_WIDTH, points.get(i).GetY() * Tile.TILE_HEIGHT, currentLevel));
-            }
-            n += map.GetItems();
-            for (; i < n; ++i)
-            {
-                items.add(new Chest(points.get(i).GetX() * Tile.TILE_WIDTH, points.get(i).GetY() * Tile.TILE_HEIGHT));
-                //System.out.println(points.get(i).GetX()+" "+points.get(i).GetY());
-            }
-        }
     }
 }
 

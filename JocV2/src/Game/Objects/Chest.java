@@ -17,9 +17,16 @@ public class Chest extends Item
         super(null, x, y, DEFAULT_CHEST_WIDTH , DEFAULT_CHEST_HEIGHT);
         image = Assets.chest;
         bounds = new Rectangle(4,12,24,16);
-        System.out.println("New chest");
         this.money = money;
         this.experience = experience;
+    }
+    public Chest(float x, float y)
+    {
+        super(null, x, y, DEFAULT_CHEST_WIDTH , DEFAULT_CHEST_HEIGHT);
+        image = Assets.chest;
+        bounds = new Rectangle(4,12,24,16);
+        this.money = 5;
+        this.experience = 5;
     }
 
     @Override
