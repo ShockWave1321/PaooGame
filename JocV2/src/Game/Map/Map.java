@@ -85,7 +85,7 @@ public class Map
         {
             //System.out.println((int)hero.GetX()+" "+(int)hero.GetY()+" "+level);
             //System.out.println("__________________");
-            System.out.println(currentPoint.x+" "+currentPoint.y);
+            //System.out.println(currentPoint.x+" "+currentPoint.y);
             //System.out.println(previousPoint.x+" "+previousPoint.y);
             //System.out.println(nextPoint.x+" "+nextPoint.y);
             //System.out.println(level);
@@ -154,28 +154,28 @@ public class Map
 
             npcN = scanner.nextInt();
             Points = new ArrayList<>();
-            System.out.println(npcN);
+            //System.out.println(npcN);
             for(int i = 0; i < npcN; i++)
             {
                 Points.add(new Point(scanner.nextInt(),scanner.nextInt()));
-                System.out.println(Points.get(i).x+" "+Points.get(i).y);
+                //System.out.println(Points.get(i).x+" "+Points.get(i).y);
             }
             charN = scanner.nextInt();
-            System.out.println(charN);
+            //System.out.println(charN);
             for(int i = npcN; i < npcN+charN; i++)
             {
                 Points.add(new Point(scanner.nextInt(),scanner.nextInt()));
             }
             itemN = scanner.nextInt();
-            System.out.println(itemN);
+            //System.out.println(itemN);
             for(int i = npcN + charN ;i < npcN + charN + itemN; i++)
             {
                 Points.add(new Point(scanner.nextInt(),scanner.nextInt()));
             }
-            for(Point p : Points)
+            /*for(Point p : Points)
             {
                 System.out.println(p.GetX()+" "+p.GetY());
-            }
+            }*/
             scanner.close();
         } catch (FileNotFoundException e)
         {

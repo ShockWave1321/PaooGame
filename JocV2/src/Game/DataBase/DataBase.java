@@ -1,23 +1,23 @@
 package Game.DataBase;
 
+import Game.Game;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class DataBase
 {
-    private static int id = 0;
     Connection c = null;
     Statement stmt = null;
     String url = "./src/Game/DataBase/";
     private final String database = "GameDataBase.db";
-    private final String mapUrl = "Resources/Maps/";
+    final String mapUrl = "Resources/Maps/";
+
     public DataBase()
     {
         InitDataBase();
@@ -122,25 +122,6 @@ public class DataBase
 
         InsertMapDatabase(map, rows, columns, lines);
     }
-    public void DeleteTable(String name)
-    {
-        GetConnection(database);
-        try {
-            c.setAutoCommit(false);
-            stmt = c.createStatement();
-
-            String sql = "DROP TABLE IF EXISTS "+name;
-            stmt.executeUpdate(sql);
-
-            c.commit();
-            stmt.close();
-            c.close();
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("Table deleted");
-    }
     public ArrayList<Object> SelectMap(String name)
     {
         GetConnection(database);
@@ -179,13 +160,16 @@ public class DataBase
         System.out.println("Operation done successfully");
         return list;
     }
+
+
+    //Inserare in tabel HERO
     public void CreateCharacterTable()
     {
         GetConnection(database);
         try {
             c.setAutoCommit(false);
             stmt = c.createStatement();
-
+            //System.out.println("Start");
             String sql = "CREATE TABLE IF NOT EXISTS HERO (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "xPos REAL, " +
@@ -200,21 +184,24 @@ public class DataBase
             stmt.close();
             c.commit();
             c.close();
-        } catch (Exception e) {
+
+        }
+        catch (Exception e)
+        {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
         System.out.println("Character table created successfully");
     }
-    public void InsertCharacterRecord(int life, int mana, int experience, int money, int xPos, int yPos)
+    public void InsertCharacterRecord(float xPos, float yPos, int health, int mana, int experience, int money)
     {
         GetConnection(database);
         try {
             c.setAutoCommit(false);
             stmt = c.createStatement();
 
-            String sql = "INSERT INTO Attributes VALUES("+id+ ", "+life+", "+mana+", "+experience+", "+money+", "+xPos+", "+yPos+")";
-            id++;
+            String sql = "INSERT INTO HERO (xPos, yPos, health, mana, experience, money) VALUES ("+xPos+","+yPos+","+health+","+mana+","+experience+","+money+")";
+
             stmt.execute(sql);
             stmt.close();
             c.commit();
@@ -224,7 +211,7 @@ public class DataBase
             System.exit(0);
         }
     }
-    public void UpdateCharacterRecord(int id, int health, int mana, int experience, int money, int xPos, int yPos)
+    public void UpdateCharacterRecord(int id, float xPos, float yPos, int health, int mana, int experience, int money)
     {
         GetConnection(database);
         try {
@@ -257,32 +244,38 @@ public class DataBase
             System.exit(0);
         }
     }
-    public void SelectCharacterRecord(int id)
+    public Map<String, Object> SelectCharacterRecord(int id)
     {
         GetConnection(database);
         try {
             c.setAutoCommit(false);
             stmt = c.createStatement();
+            Map<String, Object> map = new HashMap<>();
 
             String sql = "SELECT * FROM HERO WHERE id = " + id;
             ResultSet rs = stmt.executeQuery(sql);
             if(rs.next())
             {
-                float xPos = rs.getFloat("xPos");
-                float yPos = rs.getFloat("yPos");
-                int health = rs.getInt("health");
-                int mana = rs.getInt("mana");
-                int experience = rs.getInt("experience");
-                int money = rs.getInt("money");
+                map.put("xPos", rs.getFloat("xPos"));
+                map.put("yPos", rs.getFloat("yPos"));
+                map.put("health", rs.getInt("health"));
+                map.put("mana", rs.getInt("mana"));
+                map.put("experience", rs.getInt("experience"));
+                map.put("money", rs.getInt("money"));
             }
             rs.close();
             stmt.close();
             c.commit();
             c.close();
-        } catch (Exception e) {
+
+            return map;
+        }
+        catch (Exception e)
+        {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+        return null;
     }
     public void DeleteCharacterRecord(int id)
     {
@@ -311,14 +304,39 @@ public class DataBase
             System.exit(0);
         }
     }
+    public void DeleteTable(String name)
+    {
+        GetConnection(database);
+        try {
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+
+            String sql = "DROP TABLE IF EXISTS "+name;
+            stmt.executeUpdate(sql);
+
+            c.commit();
+            stmt.close();
+            c.close();
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("Table deleted");
+    }
     public void InitDataBase()
     {
-        //DeleteDB("Map1");
-        //DeleteDB("Map2");
-        //DeleteDB("test_map");
-        //CreateMapDatabase("Map1");
-        //CreateMapDatabase("Map2");
-        //CreateMapDatabase("test_map");
         CreateCharacterTable();
+        /*InsertCharacterRecord(15.f,15.f,10,5,20,20);
+        UpdateCharacterRecord(1,10.f,10.f,8,5,10,40);
+        DeleteCharacterRecord(2);
+        Map<String,Object> map = SelectCharacterRecord(3);
+        System.out.println((int)map.get("experience"));
+        DeleteTable("HERO");*/
     }
+    //DeleteDB("Map1");
+    //DeleteDB("Map2");
+    //DeleteDB("test_map");
+    //CreateMapDatabase("Map1");
+    //CreateMapDatabase("Map2");
+    //CreateMapDatabase("test_map");
 }

@@ -25,7 +25,7 @@ public class Game implements Runnable
     private State pauseState;
     private KeyManager keyManager;
     private RefLinks refLink;
-    private final DataBase database;
+    private DataBase database;
     int t = 0;
 
     private Game(String title, int width, int height)
@@ -38,8 +38,9 @@ public class Game implements Runnable
         wnd.getWndFrame().addKeyListener(keyManager);
         Assets.Init();
 
-        refLink = new RefLinks(this);
-        database = new DataBase();
+        refLink         = new RefLinks(this);
+        database        = new DataBase();
+
         playState       = new PlayState(refLink);
         menuState       = new MenuState(refLink);
         settingsState   = new SettingsState(refLink);
